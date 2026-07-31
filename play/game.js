@@ -58,7 +58,11 @@ scene.background = new THREE.Color(THEME.sky);
 scene.fog = new THREE.Fog(THEME.sky, 120, 260);
 
 const camera = new THREE.PerspectiveCamera(62, innerWidth / innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+// preserveDrawingBuffer costs performance, so it is only enabled for ?shot=1 —
+// the capture mode used to grab real gameplay stills for the site. Without it
+// canvas.toDataURL() returns an empty frame.
+const SHOT = new URLSearchParams(location.search).get('shot') === '1';
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: SHOT });
 renderer.setSize(innerWidth, innerHeight);
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.shadowMap.enabled = true;

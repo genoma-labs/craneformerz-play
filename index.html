@@ -81,7 +81,7 @@
   .shots{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:16px 0 18px}
   .shot{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.1);
     aspect-ratio:16/10;background:#0a0d10;position:relative}
-  .shot svg{display:block;width:100%;height:100%}
+  .shot svg,.shot img{display:block;width:100%;height:100%;object-fit:cover}
   .shot span{position:absolute;left:7px;bottom:6px;font-family:'Rajdhani',sans-serif;
     font-size:9px;font-weight:700;letter-spacing:1.6px;color:rgba(255,255,255,.82);
     text-shadow:0 1px 3px #000}
@@ -203,30 +203,8 @@
       <div class="badge">Z</div>
       <h3>ZOMBIES</h3>
       <div class="shots">
-        <div class="shot"><svg viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" role="img" aria-label="zh">
-<defs><linearGradient id="gzh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#101a12"/><stop offset="1" stop-color="#0a0d10"/></linearGradient></defs>
-<rect width="160" height="100" fill="url(#gzh)"/>
-<rect y="78" width="160" height="22" fill="#1d2a1c"/>
-<rect x="8" y="34" width="10" height="30" fill="#2b3038"/><rect x="26" y="30" width="12" height="16" fill="#3a4049"/>
-<rect x="14" y="62" width="46" height="12" fill="#f2c200"/><rect x="16" y="52" width="16" height="12" fill="#e9eef5"/>
-<rect x="36" y="48" width="7" height="16" fill="#f2c200"/>
-<rect x="38" y="30" width="5" height="20" fill="#f2c200" transform="rotate(-14 40 40)"/>
-<rect x="42" y="26" width="30" height="5" fill="#f2c200" transform="rotate(16 42 28)"/>
-<rect x="70" y="34" width="7" height="9" fill="#c62828"/>
-<circle cx="24" cy="76" r="6" fill="#14171c"/><circle cx="52" cy="76" r="6" fill="#14171c"/>
-<rect x="86" y="54" width="4" height="4" fill="#b01a1f" opacity=".9"/><rect x="95" y="61" width="4" height="4" fill="#b01a1f" opacity=".9"/><rect x="104" y="68" width="4" height="4" fill="#b01a1f" opacity=".9"/><rect x="113" y="54" width="4" height="4" fill="#b01a1f" opacity=".9"/><rect x="122" y="61" width="4" height="4" fill="#b01a1f" opacity=".9"/><rect x="131" y="68" width="4" height="4" fill="#b01a1f" opacity=".9"/><rect x="104" y="62" width="7" height="16" fill="#5cc24a"/><rect x="104" y="56" width="7" height="6" fill="#3f8f33"/><rect x="118" y="62" width="7" height="16" fill="#5cc24a"/><rect x="118" y="56" width="7" height="6" fill="#3f8f33"/><rect x="132" y="62" width="7" height="16" fill="#5cc24a"/><rect x="132" y="56" width="7" height="6" fill="#3f8f33"/><rect x="146" y="62" width="7" height="16" fill="#5cc24a"/><rect x="146" y="56" width="7" height="6" fill="#3f8f33"/></svg><span>GRAB &amp; FLING</span></div>
-        <div class="shot"><svg viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" role="img" aria-label="zb">
-<defs><linearGradient id="gzb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1012"/><stop offset="1" stop-color="#0a0d10"/></linearGradient></defs>
-<rect width="160" height="100" fill="url(#gzb)"/>
-<rect y="78" width="160" height="22" fill="#241c1c"/>
-<rect x="8" y="34" width="10" height="30" fill="#2b3038"/><rect x="26" y="30" width="12" height="16" fill="#3a4049"/>
-<rect x="14" y="62" width="46" height="12" fill="#f2c200"/><rect x="16" y="52" width="16" height="12" fill="#e9eef5"/>
-<rect x="36" y="48" width="7" height="16" fill="#f2c200"/>
-<rect x="38" y="30" width="5" height="20" fill="#f2c200" transform="rotate(-14 40 40)"/>
-<rect x="42" y="26" width="30" height="5" fill="#f2c200" transform="rotate(16 42 28)"/>
-<rect x="70" y="34" width="7" height="9" fill="#c62828"/>
-<circle cx="24" cy="76" r="6" fill="#14171c"/><circle cx="52" cy="76" r="6" fill="#14171c"/>
-<rect x="86" y="54" width="4" height="4" fill="#b01a1f" opacity=".9"/><rect x="95" y="61" width="4" height="4" fill="#b01a1f" opacity=".9"/><rect x="104" y="68" width="4" height="4" fill="#b01a1f" opacity=".9"/><rect x="113" y="54" width="4" height="4" fill="#b01a1f" opacity=".9"/><rect x="122" y="61" width="4" height="4" fill="#b01a1f" opacity=".9"/><rect x="131" y="68" width="4" height="4" fill="#b01a1f" opacity=".9"/><rect x="112" y="48" width="16" height="30" fill="#4fae40"/><rect x="112" y="42" width="16" height="6" fill="#2f7a28"/><rect x="109" y="38" width="4" height="5" fill="#2f7a28"/><rect x="127" y="38" width="4" height="5" fill="#2f7a28"/><rect x="140" y="48" width="16" height="30" fill="#4fae40"/><rect x="140" y="42" width="16" height="6" fill="#2f7a28"/><rect x="137" y="38" width="4" height="5" fill="#2f7a28"/><rect x="155" y="38" width="4" height="5" fill="#2f7a28"/></svg><span>MEGA BOSS</span></div>
+        <div class="shot"><img src="/shots/z1.jpg" alt="CRANEFORMERZ gameplay" loading="lazy" width="720" height="321"><span>GRAB &amp; FLING</span></div>
+        <div class="shot"><img src="/shots/z2.jpg" alt="CRANEFORMERZ gameplay" loading="lazy" width="720" height="321"><span>THE HORDE</span></div>
       </div>
       <p>Shamblers, runners, brutes, a motorcycle zombie and a horned MEGA BOSS every fifth wave. Chunky cubes of blood. Bomber drones overhead.</p>
       <a href="/play/?mode=z">PLAY Z →</a>
@@ -235,30 +213,8 @@
       <div class="badge">S</div>
       <h3>SHEEPS</h3>
       <div class="shots">
-        <div class="shot"><svg viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" role="img" aria-label="sh">
-<defs><linearGradient id="gsh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#121a22"/><stop offset="1" stop-color="#0a0d10"/></linearGradient></defs>
-<rect width="160" height="100" fill="url(#gsh)"/>
-<rect y="78" width="160" height="22" fill="#22301f"/>
-<rect x="8" y="34" width="10" height="30" fill="#2b3038"/><rect x="26" y="30" width="12" height="16" fill="#3a4049"/>
-<rect x="14" y="62" width="46" height="12" fill="#f2c200"/><rect x="16" y="52" width="16" height="12" fill="#e9eef5"/>
-<rect x="36" y="48" width="7" height="16" fill="#f2c200"/>
-<rect x="38" y="30" width="5" height="20" fill="#f2c200" transform="rotate(-14 40 40)"/>
-<rect x="42" y="26" width="30" height="5" fill="#f2c200" transform="rotate(16 42 28)"/>
-<rect x="70" y="34" width="7" height="9" fill="#c62828"/>
-<circle cx="24" cy="76" r="6" fill="#14171c"/><circle cx="52" cy="76" r="6" fill="#14171c"/>
-<rect x="86" y="54" width="4" height="4" fill="#ffffff" opacity=".9"/><rect x="95" y="61" width="4" height="4" fill="#ffffff" opacity=".9"/><rect x="104" y="68" width="4" height="4" fill="#ffffff" opacity=".9"/><rect x="113" y="54" width="4" height="4" fill="#ffffff" opacity=".9"/><rect x="122" y="61" width="4" height="4" fill="#ffffff" opacity=".9"/><rect x="131" y="68" width="4" height="4" fill="#ffffff" opacity=".9"/><rect x="104" y="62" width="7" height="16" fill="#f2f2f2"/><rect x="104" y="56" width="7" height="6" fill="#d4d4dc"/><rect x="118" y="62" width="7" height="16" fill="#f2f2f2"/><rect x="118" y="56" width="7" height="6" fill="#d4d4dc"/><rect x="132" y="62" width="7" height="16" fill="#f2f2f2"/><rect x="132" y="56" width="7" height="6" fill="#d4d4dc"/><rect x="146" y="62" width="7" height="16" fill="#f2f2f2"/><rect x="146" y="56" width="7" height="6" fill="#d4d4dc"/></svg><span>GRAB &amp; FLING</span></div>
-        <div class="shot"><svg viewBox="0 0 160 100" preserveAspectRatio="xMidYMid slice" role="img" aria-label="sb">
-<defs><linearGradient id="gsb" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#141c26"/><stop offset="1" stop-color="#0a0d10"/></linearGradient></defs>
-<rect width="160" height="100" fill="url(#gsb)"/>
-<rect y="78" width="160" height="22" fill="#243021"/>
-<rect x="8" y="34" width="10" height="30" fill="#2b3038"/><rect x="26" y="30" width="12" height="16" fill="#3a4049"/>
-<rect x="14" y="62" width="46" height="12" fill="#f2c200"/><rect x="16" y="52" width="16" height="12" fill="#e9eef5"/>
-<rect x="36" y="48" width="7" height="16" fill="#f2c200"/>
-<rect x="38" y="30" width="5" height="20" fill="#f2c200" transform="rotate(-14 40 40)"/>
-<rect x="42" y="26" width="30" height="5" fill="#f2c200" transform="rotate(16 42 28)"/>
-<rect x="70" y="34" width="7" height="9" fill="#c62828"/>
-<circle cx="24" cy="76" r="6" fill="#14171c"/><circle cx="52" cy="76" r="6" fill="#14171c"/>
-<rect x="86" y="54" width="4" height="4" fill="#ffffff" opacity=".9"/><rect x="95" y="61" width="4" height="4" fill="#ffffff" opacity=".9"/><rect x="104" y="68" width="4" height="4" fill="#ffffff" opacity=".9"/><rect x="113" y="54" width="4" height="4" fill="#ffffff" opacity=".9"/><rect x="122" y="61" width="4" height="4" fill="#ffffff" opacity=".9"/><rect x="131" y="68" width="4" height="4" fill="#ffffff" opacity=".9"/><rect x="112" y="48" width="16" height="30" fill="#fafafa"/><rect x="112" y="42" width="16" height="6" fill="#dcdce4"/><rect x="109" y="38" width="4" height="5" fill="#dcdce4"/><rect x="127" y="38" width="4" height="5" fill="#dcdce4"/><rect x="140" y="48" width="16" height="30" fill="#fafafa"/><rect x="140" y="42" width="16" height="6" fill="#dcdce4"/><rect x="137" y="38" width="4" height="5" fill="#dcdce4"/><rect x="155" y="38" width="4" height="5" fill="#dcdce4"/></svg><span>MEGA RAM</span></div>
+        <div class="shot"><img src="/shots/s1.jpg" alt="CRANEFORMERZ gameplay" loading="lazy" width="720" height="321"><span>GRAB &amp; FLING</span></div>
+        <div class="shot"><img src="/shots/s2.jpg" alt="CRANEFORMERZ gameplay" loading="lazy" width="720" height="321"><span>THE FLOCK</span></div>
       </div>
       <p>The family-friendly cut. Lambs, rams, a woolly tank and a MEGA RAM. Wool puffs instead of blood, and everything says baa. Same carnage, zero gore.</p>
       <a href="/play/?mode=s">PLAY S →</a>
