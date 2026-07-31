@@ -86,6 +86,50 @@
     font-size:9px;font-weight:700;letter-spacing:1.6px;color:rgba(255,255,255,.82);
     text-shadow:0 1px 3px #000}
 
+
+  /* ── Live game backdrop ── */
+  #gamebg{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;
+    opacity:.42;filter:saturate(.85) contrast(1.05);z-index:0}
+  #gamebg-wrap{position:absolute;inset:0;overflow:hidden;z-index:0}
+  #gamebg-wrap::after{content:"";position:absolute;inset:0;z-index:1;
+    background:radial-gradient(ellipse at 50% 40%,rgba(10,13,16,.35) 0%,rgba(10,13,16,.82) 62%,#0a0d10 100%)}
+  #hero{position:relative}
+  #hero > .wrap,#hero .tag,#hero h1{position:relative;z-index:2}
+  @media(max-width:760px){#gamebg{opacity:.3}}
+
+
+  /* ── SPLATTER ────────────────────────────────────────────────────────────
+     The studio is called Splatter Games. Blood should be part of the furniture,
+     not just a logo: drips off section edges, spatter behind headings, and a
+     smear that wipes across the buttons on hover. */
+  .drip{position:relative}
+  .drip::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:26px;z-index:3;
+    background-repeat:repeat-x;background-size:120px 26px;
+    background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='26'%3E%3Cpath d='M0 0h120v6H0z' fill='%23b01a1f'/%3E%3Cpath d='M8 6c0 6 4 7 4 13s-4 5-4 0zM31 6c0 9 5 10 5 16s-5 4-5-2zM58 6c0 5 3 6 3 10s-3 4-3-1zM82 6c0 11 6 12 6 18s-6 3-6-4zM104 6c0 7 4 8 4 13s-4 4-4-2z' fill='%23b01a1f'/%3E%3Ccircle cx='20' cy='23' r='2.4' fill='%23b01a1f'/%3E%3Ccircle cx='69' cy='25' r='1.8' fill='%23b01a1f'/%3E%3Ccircle cx='95' cy='21' r='1.5' fill='%23b01a1f'/%3E%3C/svg%3E")}
+  .drip.thin::after{height:18px;background-size:120px 18px;opacity:.72}
+
+  /* spatter blobs dropped behind section headings */
+  .splatbg{position:relative}
+  .splatbg::before{content:"";position:absolute;width:340px;height:300px;left:50%;top:-40px;
+    transform:translateX(-50%);pointer-events:none;z-index:0;opacity:.14;
+    background-repeat:no-repeat;background-size:contain;
+    background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 340 300'%3E%3Cg fill='%23b01a1f'%3E%3Cellipse cx='170' cy='140' rx='96' ry='74'/%3E%3Ccircle cx='58' cy='72' r='20'/%3E%3Ccircle cx='286' cy='96' r='27'/%3E%3Ccircle cx='96' cy='234' r='16'/%3E%3Ccircle cx='252' cy='226' r='22'/%3E%3Ccircle cx='30' cy='168' r='11'/%3E%3Ccircle cx='312' cy='176' r='9'/%3E%3Ccircle cx='168' cy='22' r='14'/%3E%3Ccircle cx='176' cy='284' r='12'/%3E%3C/g%3E%3C/svg%3E")}
+  .splatbg > *{position:relative;z-index:1}
+
+  /* blood smear wipes across on hover */
+  .btn{position:relative;overflow:hidden}
+  .btn::after{content:"";position:absolute;inset:0;opacity:0;transition:opacity .18s;
+    pointer-events:none;background-repeat:no-repeat;background-size:cover;
+    background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60'%3E%3Cg fill='%23b01a1f' opacity='.55'%3E%3Cellipse cx='60' cy='30' rx='54' ry='19'/%3E%3Ccircle cx='142' cy='22' r='13'/%3E%3Ccircle cx='170' cy='38' r='8'/%3E%3Ccircle cx='190' cy='26' r='4'/%3E%3C/g%3E%3C/svg%3E")}
+  .btn:hover::after{opacity:1}
+
+  /* the wordmark bleeds a little */
+  h1::after{content:"";position:absolute;left:50%;bottom:-16px;width:190px;height:34px;
+    transform:translateX(-50%);pointer-events:none;opacity:.85;
+    background-repeat:no-repeat;background-size:contain;
+    background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 190 34'%3E%3Cg fill='%23b01a1f'%3E%3Cpath d='M36 0c0 12 5 13 5 21s-5 6-5-1zM92 0c0 16 7 17 7 26s-7 5-7-6zM148 0c0 9 4 10 4 17s-4 4-4-3z'/%3E%3Ccircle cx='60' cy='27' r='3'/%3E%3Ccircle cx='120' cy='31' r='2.2'/%3E%3C/g%3E%3C/svg%3E")}
+  h1{position:relative}
+
   /* ── Contact ── */
   #contact{border-top:1px solid rgba(255,255,255,.1)}
   .eyebrow{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:4px;color:var(--y);margin-bottom:14px}
@@ -131,6 +175,7 @@
 </head>
 <body>
 <canvas id="field"></canvas>
+<div id="gamebg-wrap"><iframe id="gamebg" src="/play/?mode=z&bg=1" title="CRANEFORMERZ gameplay" loading="lazy" tabindex="-1" aria-hidden="true" scrolling="no"></iframe></div>
 
 <header>
   <div class="wrap">
@@ -150,7 +195,7 @@
   </div>
 </header>
 
-<section class="wrap">
+<section class="wrap splatbg">
   <h2>TWO EDITIONS</h2>
   <p class="sub">Same crane, same physics, same chaos. Pick your horde.</p>
   <div class="eds">
@@ -232,7 +277,7 @@
   </div>
 </section>
 
-<section class="wrap soon">
+<section class="wrap soon drip thin">
   <h2>COMING NEXT</h2>
   <p class="sub">The browser demo is the preview. The full game goes further.</p>
   <div class="chips">
@@ -242,7 +287,7 @@
   </div>
 </section>
 
-<section id="contact" class="wrap">
+<section id="contact" class="wrap splatbg">
   <div class="eyebrow">CONTACT</div>
   <h2 class="hello" style="text-align:left">Say <span>hello.</span></h2>
   <p class="cintro">We're a small studio and we read everything. Publishing, press, festivals,
