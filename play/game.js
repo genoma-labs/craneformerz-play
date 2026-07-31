@@ -65,6 +65,25 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 document.body.appendChild(renderer.domElement);
 
+// A lost WebGL context otherwise just freezes on a black screen with nothing in the
+// console, which reads as "the game crashed" with no cause. Say so out loud, and
+// stop the render loop from spinning against a dead context.
+let glLost = false;
+renderer.domElement.addEventListener('webglcontextlost', e => {
+  e.preventDefault();
+  glLost = true;
+  const b = document.createElement('div');
+  b.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;' +
+    'flex-direction:column;gap:14px;background:rgba(8,10,14,.94);color:#fff;z-index:9999;' +
+    "font-family:'Rajdhani',sans-serif;text-align:center;padding:24px";
+  b.innerHTML = '<div style="font-size:26px;font-weight:700;letter-spacing:2px">GRAPHICS CONTEXT LOST</div>' +
+    '<div style="opacity:.75;max-width:440px">The browser dropped the 3D context — usually low GPU memory. ' +
+    'Reload to get back in.</div>' +
+    '<button onclick="location.reload()" style="padding:13px 30px;border:none;border-radius:999px;' +
+    'background:#f2c200;color:#1a1207;font-weight:700;font-size:15px;cursor:pointer">RELOAD</button>';
+  document.body.appendChild(b);
+});
+
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;
   camera.updateProjectionMatrix();
@@ -85,6 +104,25 @@ scene.add(sun);
 
 const box = (w, h, d) => new THREE.BoxGeometry(w, h, d);
 const mat = (c, opts = {}) => new THREE.MeshLambertMaterial({ color: c, ...opts });
+
+// ── Shared particle resources ────────────────────────────────────────────────
+// Blood cubes and debris are spawned by the hundreds per minute. Building a new
+// BoxGeometry + material for each one leaks GPU memory permanently: scene.remove()
+// only detaches from the scene graph, it does NOT free the vertex buffer or the
+// compiled shader. That leak exhausted the GPU and killed the WebGL context
+// mid-game. Particles now share one unit cube (scaled per instance) and one
+// material per colour, so there is nothing left to leak.
+//
+// Only safe because particle materials are never mutated. The bomb-blink, flame
+// and glint materials ARE mutated per frame, so those keep their own instances.
+const UNIT_BOX = new THREE.BoxGeometry(1, 1, 1);
+const _particleMats = new Map();
+function particleMat(c) {
+  let m = _particleMats.get(c);
+  if (!m) { m = new THREE.MeshLambertMaterial({ color: c }); _particleMats.set(c, m); }
+  return m;
+}
+const MAX_BITS = 900;   // hard ceiling; oldest recycle out so a big wave can't stall
 
 // ── Ground ──
 const ground = new THREE.Mesh(new THREE.PlaneGeometry(ARENA * 2, ARENA * 2), mat(THEME.ground));
@@ -1157,11 +1195,18 @@ function explode(pos) {
 // Particles (impact juice)
 // ─────────────────────────────────────────────────────────────────────────────
 const bits = [];
+// Drop the oldest particles once over budget. Without a ceiling a mega-boss death
+// during a heavy wave can spike thousands of meshes in a single frame.
+function trimBits() {
+  while (bits.length > MAX_BITS) { scene.remove(bits[0].mesh); bits.shift(); }
+}
 function burst(pos, color, count = 16, power = 9) {
   for (let i = 0; i < count; i++) {
-    const m = new THREE.Mesh(box(0.32, 0.32, 0.32), mat(color));
+    const m = new THREE.Mesh(UNIT_BOX, particleMat(color));
+    m.scale.setScalar(0.32);
     m.position.copy(pos);
     scene.add(m);
+    trimBits();
     bits.push({
       mesh: m,
       vel: new THREE.Vector3(
@@ -1716,7 +1761,8 @@ function bloodSpray(pos, amount, power) {
   amount = Math.round(amount * THEME.goreCount);
   for (let i = 0; i < amount; i++) {
     const s = 0.18 + Math.random() * 0.34;
-    const m = new THREE.Mesh(box(s, s, s), mat(THEME.gore[(Math.random() * THEME.gore.length) | 0]));
+    const m = new THREE.Mesh(UNIT_BOX, particleMat(THEME.gore[(Math.random() * THEME.gore.length) | 0]));
+    m.scale.setScalar(s);
     m.position.copy(pos);
     m.position.x += (Math.random() - 0.5) * 1.2;
     m.position.z += (Math.random() - 0.5) * 1.2;
@@ -1732,6 +1778,7 @@ function bloodSpray(pos, amount, power) {
       sticky: true,       // blood settles and stains instead of vanishing mid-air
     });
   }
+  trimBits();
 }
 
 // Damage a zombie; only kill it when HP actually runs out. Boom sweeps, rams and
@@ -1800,6 +1847,7 @@ function updateCamera(dt, idle) {
 }
 
 function tick() {
+  if (glLost) return;                 // dead context: stop, the overlay has the message
   requestAnimationFrame(tick);
   const dt = Math.min(clock.getDelta(), 0.05);
   // ATTRACT MODE: before the player starts, the game plays ITSELF behind the
