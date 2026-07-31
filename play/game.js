@@ -1387,7 +1387,7 @@ const state = {
   // ASSIST (mouse/IK) is deliberately easy, so it's a limited resource. JOINT
   // mode - driving each hydraulic axis yourself, like a real crane - is the
   // default and recharges the assist meter.
-  aimX: 0, aimY: 0.55, usingMouse: false, mouseAim: true,
+  aimX: 0, aimY: 0.55, usingMouse: false, mouseAim: false,
   held: null,
 };
 
@@ -1395,8 +1395,11 @@ const keys = {};
 addEventListener('keydown', e => {
   keys[e.code] = true;
   if ([ 'Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight' ].includes(e.code)) e.preventDefault();
-  if (e.code === 'Space') tryGrabRelease();
-  if (e.code === 'KeyM') toggleMusic();
+  // e.repeat guards the auto-repeat storm: holding SPACE used to fire
+  // tryGrabRelease() dozens of times a second, thrashing grab/release and
+  // making the load shudder. Grab is an edge, not a held state.
+  if (e.code === 'Space' && !e.repeat) tryGrabRelease();
+  if (e.code === 'KeyM' && !e.repeat) toggleMusic();
 });
 addEventListener('keyup', e => { keys[e.code] = false; });
 
