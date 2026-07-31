@@ -57,7 +57,7 @@
   .sub{text-align:center;color:rgba(255,255,255,.6);max-width:640px;margin:0 auto 42px;font-size:17px;line-height:1.55}
 
   .eds{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px}
-  .ed{border-radius:18px;padding:30px;border:2px solid rgba(255,255,255,.12);background:rgba(255,255,255,.035);
+  .ed{border-radius:18px;padding:30px;border:2px solid rgba(255,255,255,.12);background:#11151b;
     transition:border-color .2s,transform .2s}
   .ed:hover{transform:translateY(-4px)}
   .ed.z:hover{border-color:var(--z)} .ed.s:hover{border-color:var(--s)}
@@ -97,6 +97,15 @@
   #hero > .wrap,#hero .tag,#hero h1{position:relative;z-index:2}
   @media(max-width:760px){#gamebg{opacity:.3}}
 
+
+
+  .mob{display:flex;align-items:flex-end;gap:7px;margin:2px 0 0 12px}
+  .mob svg{display:block;filter:drop-shadow(0 2px 4px rgba(0,0,0,.55))}
+  .mob .m2{animation:bob 1.5s ease-in-out infinite .2s}
+  .mob .m1{animation:bob 1.7s ease-in-out infinite}
+  .mob .m3{animation:bob 1.3s ease-in-out infinite .4s}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  .edhead{display:flex;align-items:center}
 
   /* ── SPLATTER ────────────────────────────────────────────────────────────
      The studio is called Splatter Games. Blood should be part of the furniture,
@@ -200,7 +209,7 @@
   <p class="sub">Same crane, same physics, same chaos. Pick your horde.</p>
   <div class="eds">
     <div class="ed z">
-      <div class="badge">Z</div>
+      <div class="edhead"><div class="badge">Z</div><div class="mob"><svg class="m1" width="22" height="34" viewBox="0 0 22 34" aria-hidden="true"><rect x="6" y="0" width="11" height="9" fill="#6fd45a"/><rect x="8" y="3" width="2" height="2" fill="#101a12"/><rect x="13" y="3" width="2" height="2" fill="#101a12"/><rect x="8" y="6" width="7" height="1.5" fill="#2f5d28"/><rect x="5" y="10" width="13" height="13" fill="#5cc24a"/><rect x="0" y="11" width="6" height="4" fill="#6fd45a"/><rect x="17" y="11" width="5" height="4" fill="#6fd45a"/><rect x="6" y="24" width="4" height="10" fill="#3f8f33"/><rect x="13" y="24" width="4" height="10" fill="#3f8f33"/></svg><svg class="m2" width="22" height="34" viewBox="0 0 22 34" aria-hidden="true"><rect x="6" y="0" width="11" height="9" fill="#6fd45a"/><rect x="8" y="3" width="2" height="2" fill="#101a12"/><rect x="13" y="3" width="2" height="2" fill="#101a12"/><rect x="8" y="6" width="7" height="1.5" fill="#2f5d28"/><rect x="5" y="10" width="13" height="13" fill="#5cc24a"/><rect x="0" y="11" width="6" height="4" fill="#6fd45a"/><rect x="17" y="11" width="5" height="4" fill="#6fd45a"/><rect x="6" y="24" width="4" height="10" fill="#3f8f33"/><rect x="13" y="24" width="4" height="10" fill="#3f8f33"/></svg><svg class="m3" width="22" height="34" viewBox="0 0 22 34" aria-hidden="true"><rect x="6" y="0" width="11" height="9" fill="#6fd45a"/><rect x="8" y="3" width="2" height="2" fill="#101a12"/><rect x="13" y="3" width="2" height="2" fill="#101a12"/><rect x="8" y="6" width="7" height="1.5" fill="#2f5d28"/><rect x="5" y="10" width="13" height="13" fill="#5cc24a"/><rect x="0" y="11" width="6" height="4" fill="#6fd45a"/><rect x="17" y="11" width="5" height="4" fill="#6fd45a"/><rect x="6" y="24" width="4" height="10" fill="#3f8f33"/><rect x="13" y="24" width="4" height="10" fill="#3f8f33"/></svg></div></div>
       <h3>ZOMBIES</h3>
       <div class="shots">
         <div class="shot"><img src="/shots/z1.jpg" alt="CRANEFORMERZ gameplay" loading="lazy" width="720" height="321"><span>GRAB &amp; FLING</span></div>
@@ -210,7 +219,7 @@
       <a href="/play/?mode=z">PLAY Z →</a>
     </div>
     <div class="ed s">
-      <div class="badge">S</div>
+      <div class="edhead"><div class="badge">S</div><div class="mob"><svg class="m1" width="30" height="26" viewBox="0 0 30 26" aria-hidden="true"><rect x="4" y="4" width="20" height="13" fill="#fafafa"/><rect x="2" y="7" width="4" height="7" fill="#f0f0f4"/><rect x="22" y="3" width="8" height="8" fill="#2b2f36"/><rect x="24" y="5" width="1.6" height="1.6" fill="#fff"/><rect x="27" y="5" width="1.6" height="1.6" fill="#fff"/><rect x="6" y="17" width="3.4" height="9" fill="#2b2f36"/><rect x="18" y="17" width="3.4" height="9" fill="#2b2f36"/></svg><svg class="m2" width="30" height="26" viewBox="0 0 30 26" aria-hidden="true"><rect x="4" y="4" width="20" height="13" fill="#fafafa"/><rect x="2" y="7" width="4" height="7" fill="#f0f0f4"/><rect x="22" y="3" width="8" height="8" fill="#2b2f36"/><rect x="24" y="5" width="1.6" height="1.6" fill="#fff"/><rect x="27" y="5" width="1.6" height="1.6" fill="#fff"/><rect x="6" y="17" width="3.4" height="9" fill="#2b2f36"/><rect x="18" y="17" width="3.4" height="9" fill="#2b2f36"/></svg><svg class="m3" width="30" height="26" viewBox="0 0 30 26" aria-hidden="true"><rect x="4" y="4" width="20" height="13" fill="#fafafa"/><rect x="2" y="7" width="4" height="7" fill="#f0f0f4"/><rect x="22" y="3" width="8" height="8" fill="#2b2f36"/><rect x="24" y="5" width="1.6" height="1.6" fill="#fff"/><rect x="27" y="5" width="1.6" height="1.6" fill="#fff"/><rect x="6" y="17" width="3.4" height="9" fill="#2b2f36"/><rect x="18" y="17" width="3.4" height="9" fill="#2b2f36"/></svg></div></div>
       <h3>SHEEPS</h3>
       <div class="shots">
         <div class="shot"><img src="/shots/s1.jpg" alt="CRANEFORMERZ gameplay" loading="lazy" width="720" height="321"><span>GRAB &amp; FLING</span></div>
