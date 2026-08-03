@@ -18,9 +18,17 @@ export const net = {
 
 const $ = id => document.getElementById(id);
 
+// The published demo is on static hosting, which cannot serve WebSockets, so the
+// room server lives on a Cloudflare Worker + Durable Object. Local dev still
+// serves the game and the socket from one origin, so keep that path same-origin.
+const ROOM_SERVER = 'wss://craneformerz-rooms.genoma-labs.workers.dev';
 function wsUrl() {
-  const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
-  return `${proto}//${location.host}`;
+  const local = ['localhost', '127.0.0.1', ''].includes(location.hostname);
+  if (local) {
+    const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+    return `${proto}//${location.host}`;
+  }
+  return ROOM_SERVER;
 }
 
 export function connect() {
