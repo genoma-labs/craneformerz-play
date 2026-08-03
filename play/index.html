@@ -245,6 +245,14 @@
     addEventListener('DOMContentLoaded', function () { document.body.classList.add('bgmode'); });
   }
 </script>
+<style>
+  /* Multiplayer controls when no server is reachable: visibly dead, not fake-alive. */
+  .mp-off{opacity:.34;filter:grayscale(1);cursor:not-allowed!important}
+  #btnSolo.primary{box-shadow:0 0 0 2px #f2c200,0 8px 26px rgba(242,194,0,.4);
+    animation:soloPulse 2.2s ease-in-out infinite}
+  @keyframes soloPulse{0%,100%{box-shadow:0 0 0 2px #f2c200,0 8px 26px rgba(242,194,0,.35)}
+    50%{box-shadow:0 0 0 2px #f2c200,0 8px 34px rgba(242,194,0,.6)}}
+</style>
 </head>
 <body>
 <div id="lobby">

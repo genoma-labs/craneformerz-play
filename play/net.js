@@ -31,7 +31,8 @@ export function connect() {
     ws.onerror = () => { net.connected = false; resolve(false); };
     ws.onclose = () => {
       net.connected = false;
-      setLobbyStatus('SOLO MODE — multiplayer server offline', false);
+      setLobbyStatus('MULTIPLAYER NOT LIVE YET — SOLO VS AI IS READY', false);
+      setMultiplayerAvailable(false);
     };
     ws.onmessage = ev => {
       let m; try { m = JSON.parse(ev.data); } catch { return; }
@@ -80,6 +81,24 @@ export function sendWorld(zombies, trucks) {
   net.ws.send(JSON.stringify({ type: 'world', zombies, trucks }));
 }
 
+
+// The demo is hosted on static hosting (GitHub Pages), which cannot serve
+// WebSockets. Rather than leave QUICK JOIN / CREATE ROOM looking functional and
+// failing silently, grey them out and say why. Solo play is unaffected.
+function setMultiplayerAvailable(ok) {
+  const ids = ['btnQuick', 'btnCreate', 'btnCode', 'roomCode'];
+  for (const id of ids) {
+    const el = $(id);
+    if (!el) continue;
+    el.classList.toggle('mp-off', !ok);
+    if ('disabled' in el) el.disabled = !ok;
+    el.style.pointerEvents = ok ? '' : 'none';
+    el.title = ok ? '' : 'Multiplayer server is not live yet';
+  }
+  const solo = $('btnSolo');
+  if (solo) solo.classList.toggle('primary', !ok);
+}
+
 // ── Lobby UI ────────────────────────────────────────────────────────────────
 function setLobbyStatus(text, isError) {
   const el = $('lobbyStatus');
@@ -93,7 +112,8 @@ function renderRooms(list) {
   if (!box) return;
   if (!list.length) {
     box.innerHTML = '<div class="empty">' +
-      (net.connected ? 'No open rooms — start one.' : 'Multiplayer needs the game server. Hit SOLO VS AI to play now.') + '</div>';
+      (net.connected ? 'No open rooms — start one.'
+                     : 'Rooms need a live game server, which is not up yet. SOLO VS AI plays now.') + '</div>';
     return;
   }
   box.innerHTML = '';
@@ -142,10 +162,12 @@ export async function initLobby(onSolo) {
   setLobbyStatus('CONNECTING…');
   const ok = await connect();
   if (!ok) {
-    setLobbyStatus('SOLO MODE — multiplayer server offline', false);
+    setLobbyStatus('MULTIPLAYER NOT LIVE YET — SOLO VS AI IS READY', false);
+    setMultiplayerAvailable(false);
     return;
   }
   setLobbyStatus('');
+  setMultiplayerAvailable(true);
   net.ws.send(JSON.stringify({ type: 'list' }));
   setInterval(() => {
     if (net.connected && !net.room) net.ws.send(JSON.stringify({ type: 'list' }));
