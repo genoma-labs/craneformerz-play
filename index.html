@@ -180,6 +180,18 @@
   .legal{font-size:13px;line-height:2;color:rgba(255,255,255,.34);letter-spacing:.6px}
   .legal .ent{color:rgba(255,255,255,.5)}
   .legal .loc{color:rgba(255,255,255,.44)}
+
+  /* ── RESPONSIVE HARDENING ──────────────────────────────────────────────────
+     The logo's blood drips are absolutely positioned by percentage and ran past
+     the right edge on a rotated phone, giving the page a horizontal scrollbar
+     (measured: scrollWidth 970 vs clientWidth 915 at 915x412). Clip the axis and
+     let grid children actually shrink. */
+  html,body{overflow-x:hidden;max-width:100%}
+  .frow{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .frow > *,.fld{min-width:0}
+  .fld input,.fld textarea,.fld select{max-width:100%;min-width:0}
+  @media(max-width:900px){.frow{grid-template-columns:1fr}}
+  img,canvas,svg,iframe{max-width:100%}
 </style>
 <!-- Cloudflare Web Analytics: privacy-first, no cookies, so no consent banner needed. -->
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "8e75b1403359441aa2ae403be204dbe7"}'></script>

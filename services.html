@@ -1,0 +1,625 @@
+<title>CRANEFORMERZ — Crane Services, Los Angeles</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Knuckle-boom crane services in Los Angeles. Lifting, placement and material handling. Request a quote.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Bungee+Shade&family=Wallpoet&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--y:#f2c200;--ink:#0e1116;--pan:#161b22;--line:rgba(255,255,255,.11);--dim:rgba(255,255,255,.72)}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ink);color:#fff;font-family:'Rajdhani',sans-serif;font-size:17px;line-height:1.6}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 24px}
+  a{color:var(--y)}
+
+#field{position:fixed;inset:0;z-index:0;pointer-events:none}
+  /* Same roaming field as the game site, dialled back so it reads as texture on a
+     business page rather than the main event. Content sits above it. */
+  #field{opacity:.30}
+  .wrap,header .wrap{position:relative;z-index:2}
+  header,section,footer{position:relative;z-index:1}
+  section:not(.game){background:rgba(14,17,22,.82)}
+  .card,.frame,.fld input,.fld select,.fld textarea{backdrop-filter:blur(2px)}
+
+  /* Hero — deliberately clean. No splatter here; that lives on the game site. */
+  header{padding:74px 0 54px;border-bottom:1px solid var(--line);
+    background:radial-gradient(ellipse at 22% 0%,rgba(242,194,0,.10) 0%,transparent 62%)}
+  .mark{font-family:'Bungee',sans-serif;font-size:19px;letter-spacing:1px}
+  .mark span{color:var(--y)}
+  h1{font-family:'Bungee',sans-serif;font-size:clamp(33px,5.6vw,56px);line-height:1.04;margin:26px 0 18px;max-width:16ch}
+  .lede{font-size:20px;color:var(--dim);max-width:620px}
+  .cta{display:inline-block;margin-top:28px;padding:16px 34px;border-radius:999px;background:var(--y);
+    color:#1a1207;font-family:'Bungee',sans-serif;font-size:15px;letter-spacing:1px;text-decoration:none;
+    box-shadow:0 8px 26px rgba(242,194,0,.26)}
+
+  section{padding:56px 0;border-bottom:1px solid var(--line)}
+  h2{font-family:'Bungee',sans-serif;font-size:23px;letter-spacing:.5px;margin:0 0 8px}
+  .sub{color:rgba(255,255,255,.55);margin:0 0 28px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:820px){.grid{grid-template-columns:1fr}}
+  .card{background:var(--pan);border:1px solid var(--line);border-radius:14px;padding:24px}
+  .card h3{font-family:'Bungee',sans-serif;font-size:16px;margin:0 0 8px;color:var(--y)}
+  .card p{margin:0;color:var(--dim);font-size:16px}
+
+.cfzlogo { position: relative; line-height: .92; }
+.cfzlogo .top {
+    display: block; font-size: 15px; letter-spacing: 11px; font-weight: 700;
+    font-family: 'Rajdhani', sans-serif; color: #ffd24a; text-shadow: 0 0 18px rgba(255,180,40,.65), 0 3px 0 #7a3b00;
+    margin-bottom: 6px; padding-left: 13px;
+  }
+.cfzlogo .word {
+    display: inline-block; font-size: 84px; letter-spacing: 2px;
+    font-family: 'Wallpoet', Impact, sans-serif;
+    color: #f2c200;
+    -webkit-text-stroke: 4px #1a1207;
+    paint-order: stroke fill;
+    text-shadow:
+      0 5px 0 #a86a00, 0 9px 0 #6d4300,
+      0 14px 26px rgba(0,0,0,.85);
+    transform: skewX(-6deg);
+  }
+.cfzlogo .zed {
+    display: inline-block; font-size: 108px;
+    font-family: 'Bungee Shade', Impact, sans-serif;
+    color: #7fc242;
+    -webkit-text-stroke: 5px #14200a;
+    paint-order: stroke fill;
+    text-shadow:
+      0 5px 0 #3f6b1f, 0 10px 0 #24400f,
+      0 0 30px rgba(150,220,90,.55),
+      0 16px 30px rgba(0,0,0,.9);
+    transform: skewX(-6deg) rotate(7deg) translateY(6px);
+    position: relative;
+    animation: zlurch 3.2s ease-in-out infinite;
+  }
+.cfzlogo .sub {
+    display: block; margin-top: 16px; font-size: 13px; letter-spacing: 7px;
+    font-family: 'Bungee', sans-serif; color: rgba(255,255,255,.8);
+  }
+.cfzlogo .word { font-size: 54px; }
+.cfzlogo .zed { font-size: 70px; }
+.cfzlogo .top { font-size: 13px; letter-spacing: 7px; }
+  .cfzlogo{margin-bottom:6px}
+  .cfzlogo .word{font-size:56px}
+  .cfzlogo .zed{font-size:72px}
+  @media(max-width:640px){.cfzlogo .word{font-size:34px}.cfzlogo .zed{font-size:44px}}
+
+  /* Fleet — real machines, graded toward the game palette so the two halves of
+     the brand look like one thing. Filter is cosmetic only; the photos are real. */
+  .fleet{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:8px}
+  @media(max-width:820px){.fleet{grid-template-columns:1fr}}
+  .frame{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--line);
+    background:#0b0f14;aspect-ratio:4/3}
+  .frame img{width:100%;height:100%;object-fit:cover;display:block;
+    filter:saturate(.55) contrast(1.16) brightness(.86) hue-rotate(-8deg)}
+  .frame::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(160deg,rgba(92,194,74,.30),rgba(20,40,18,.42) 55%,rgba(0,0,0,.55));
+    mix-blend-mode:hard-light}
+  .frame::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;opacity:.16;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.9) 0 1px,transparent 1px 3px)}
+  .frame figcaption{position:absolute;left:0;right:0;bottom:0;z-index:3;padding:14px 16px;
+    font-family:'Bungee',sans-serif;font-size:12px;letter-spacing:2px;color:#dff5d6;
+    background:linear-gradient(transparent,rgba(0,0,0,.82))}
+  .first{display:inline-block;padding:7px 15px;border-radius:999px;margin-bottom:6px;
+    background:rgba(127,194,66,.15);border:1px solid rgba(127,194,66,.45);color:#9fe08a;
+    font-family:'Bungee',sans-serif;font-size:12px;letter-spacing:2px}
+
+
+  /* Responsive hardening.
+     Grid children default to min-width:auto, so a long placeholder or a date
+     input's intrinsic width refuses to shrink and the columns overflow into each
+     other. This is what made fields overlap on a rotated phone: landscape is
+     wider than the 680px breakpoint, so it stayed two-column at ~700px with no
+     room. minmax(0,1fr) + min-width:0 lets them actually shrink, and the
+     breakpoint now covers landscape handsets. */
+  .frow{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .frow > *{min-width:0}
+  .fld{min-width:0}
+  .fld input,.fld select,.fld textarea{max-width:100%;min-width:0}
+  .fld input[type=date]{-webkit-appearance:none;appearance:none}
+  .fld input[type=file]{font-size:14px;padding:11px 12px}
+  @media(max-width:900px){.frow{grid-template-columns:1fr}}
+  /* very short viewports (landscape phones) - stop the hero eating the screen */
+  @media(max-height:520px) and (orientation:landscape){
+    header{padding:34px 0 26px}
+    .cfzlogo .word{font-size:34px}.cfzlogo .zed{font-size:44px}
+    section{padding:34px 0}
+  }
+  .grid,.fleet{grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))}
+  img,figure,canvas{max-width:100%}
+  body{overflow-x:hidden}
+
+  /* Quote form */
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:680px){.frow{grid-template-columns:1fr}}
+  .fld{margin-bottom:16px}
+  .fld label{display:block;font-size:12px;font-weight:700;letter-spacing:2.4px;
+    color:rgba(255,255,255,.55);margin-bottom:7px;text-transform:uppercase}
+  .fld input,.fld select,.fld textarea{width:100%;padding:14px 16px;border-radius:11px;
+    background:rgba(255,255,255,.05);border:1px solid var(--line);color:#fff;
+    font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:600}
+  .fld textarea{min-height:130px;resize:vertical}
+  .fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--y)}
+  .fld select option{background:var(--pan)}
+  .send{font-family:'Bungee',sans-serif;font-size:15px;letter-spacing:1px;padding:16px 34px;border:none;
+    border-radius:999px;background:var(--y);color:#1a1207;cursor:pointer}
+  .send[disabled]{opacity:.5;cursor:not-allowed}
+  .msg{margin-top:14px;font-weight:600}
+  .msg.ok{color:#7fd47a}.msg.err{color:#ff8a80}
+  .note{font-size:14px;color:rgba(255,255,255,.45);margin-top:12px}
+
+  /* Game strip — one tasteful mention, not the main event */
+  .game{background:linear-gradient(180deg,#0b0f14,#0e1116);text-align:center}
+  .game h2{color:var(--y)}
+  .game .shot{max-width:560px;width:100%;border-radius:13px;border:1px solid var(--line);margin:20px auto 0;display:block}
+  .ghost{display:inline-block;margin-top:22px;padding:14px 30px;border-radius:999px;
+    border:1px solid rgba(255,255,255,.28);color:#fff;text-decoration:none;font-weight:700;letter-spacing:1px}
+  footer{padding:36px 0 60px;color:rgba(255,255,255,.4);font-size:14px}
+</style>
+
+<canvas id="field"></canvas>
+<header>
+  <div class="wrap">
+    <div class="cfzlogo"><span class="word">CRANEFORMER</span><span class="zed">Z</span></div>
+    <div class="first">LOS ANGELES — FIRST CITY, NOW OPEN</div>
+    <h1>Knuckle-boom crane services.</h1>
+    <p class="lede">Los Angeles is the first CRANEFORMERZ city. Lifting, placement and material
+      handling with premium knuckle-boom equipment — and the network is opening city by city.</p>
+    <a class="cta" href="#quote">REQUEST A QUOTE</a>
+    <a class="cta" href="#franchise" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,.3);box-shadow:none;margin-left:10px">FRANCHISE →</a>
+  </div>
+</header>
+
+<section class="wrap">
+  <h2>WHAT WE DO</h2>
+  <p class="sub">Precision lifting where a conventional crane will not fit.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>LIFTING &amp; PLACEMENT</h3>
+      <p>Setting equipment, HVAC units, steel and materials into position — including over
+        obstacles and into tight urban sites.</p>
+    </div>
+    <div class="card">
+      <h3>MATERIAL HANDLING</h3>
+      <p>Loading, unloading and site delivery with a truck-mounted knuckle boom. Reach without
+        needing a full crane setup.</p>
+    </div>
+    <div class="card">
+      <h3>AWKWARD JOBS</h3>
+      <p>Restricted access, limited street frontage, difficult angles. If it is hard to reach,
+        it is worth asking.</p>
+    </div>
+  </div>
+</section>
+
+
+<section class="wrap">
+  <h2>OUR FLEET</h2>
+  <p class="sub">Real machines, real jobs. COPMA knuckle booms on all-terrain chassis.</p>
+  <div class="fleet">
+    <figure class="frame" style="margin:0">
+      <img src="https://play.craneformers.io/fleet/fleet1.jpg" alt="Knuckle-boom crane on outriggers lifting a heavy trailer bed" loading="lazy">
+      <figcaption>LIFTING ON OUTRIGGERS — LOS ANGELES</figcaption>
+    </figure>
+    <figure class="frame" style="margin:0">
+      <img src="https://play.craneformers.io/fleet/fleet2.jpg" alt="COPMA 228 HP knuckle boom mounted on a 6x6 chassis, boom extended" loading="lazy">
+      <figcaption>COPMA 228 HP — FULL REACH</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="wrap" id="quote">
+  <h2>REQUEST A QUOTE</h2>
+  <p class="sub">The more you tell us about the lift, the more accurate the number.</p>
+  <form id="qf">
+    <div class="frow">
+      <div class="fld"><label for="q-name">Name</label><input id="q-name" required autocomplete="name"></div>
+      <div class="fld"><label for="q-email">Email</label><input id="q-email" type="email" required autocomplete="email"></div>
+    </div>
+    <div class="frow">
+      <div class="fld"><label for="q-company">Company (optional)</label><input id="q-company" autocomplete="organization"></div>
+      <div class="fld"><label for="q-jobtype">Job type</label>
+        <select id="q-jobtype">
+          <option>Lifting / placement</option>
+          <option>Material handling / delivery</option>
+          <option>Restricted access job</option>
+          <option>Not sure yet</option>
+        </select>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fld"><label for="q-location">Job location</label><input id="q-location" placeholder="Address or area, Los Angeles"></div>
+      <div class="fld"><label for="q-site">Site type</label>
+        <select id="q-site">
+          <option>Private property</option>
+          <option>Commercial site</option>
+          <option>Public road / right-of-way</option>
+          <option>Not sure</option>
+        </select>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fld"><label for="q-date">Date needed</label><input id="q-date" type="date"></div>
+      <div class="fld"><label for="q-file">Photo or video of the job (optional)</label>
+        <input id="q-file" type="file" accept="image/*,video/*">
+        <div id="q-fileinfo" class="note" style="margin-top:6px"></div>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fld"><label for="q-weight">Approx. weight</label><input id="q-weight" placeholder="e.g. 900 kg / 2000 lb"></div>
+      <div class="fld"><label for="q-height">Height / reach needed</label><input id="q-height" placeholder="e.g. 3rd floor, 12 m"></div>
+    </div>
+    <div class="fld"><label for="q-details">Details</label>
+      <textarea id="q-details" placeholder="What needs moving, from where to where, access constraints."></textarea></div>
+
+    <div class="cf-turnstile" data-sitekey="0x4AAAAAAEHOkJDeg6LbnPaC" data-theme="dark"></div>
+
+    <button class="send" type="submit" id="q-send" style="margin-top:16px">SEND REQUEST →</button>
+    <div class="msg" id="q-msg"></div>
+    <p class="note">We don't publish a phone number — this form reaches us directly and keeps the
+      spam out. We reply to real enquiries quickly.</p>
+  </form>
+</section>
+
+
+<section class="wrap" id="franchise" style="background:linear-gradient(180deg,rgba(242,194,0,.06),transparent)">
+  <h2>OPEN A CRANEFORMERZ IN YOUR CITY</h2>
+  <p class="sub">Los Angeles is city number one. We are opening the network city by city — if you
+    run lifting work in yours, or want to, this is how you plug in.</p>
+  <div class="grid">
+    <div class="card">
+      <h3>PREMIUM EQUIPMENT</h3>
+      <p>Access to premium knuckle-boom cranes at network pricing, without sourcing and
+        negotiating every machine yourself.</p>
+    </div>
+    <div class="card">
+      <h3>SERVICE &amp; PARTS</h3>
+      <p>Priority service and genuine parts for your knuckle boom. Downtime is the whole cost of
+        this business — the network exists to cut it.</p>
+    </div>
+    <div class="card">
+      <h3>THE BRAND</h3>
+      <p>Trade under a name people already recognise, with the marketing, the site and the
+        booking flow handled for you.</p>
+    </div>
+  </div>
+
+  <form id="ff" style="margin-top:34px">
+    <div class="frow">
+      <div class="fld"><label for="f-name">Name</label><input id="f-name" required autocomplete="name"></div>
+      <div class="fld"><label for="f-email">Email</label><input id="f-email" type="email" required autocomplete="email"></div>
+    </div>
+    <div class="frow">
+      <div class="fld"><label for="f-city">City / region</label><input id="f-city" placeholder="Where you would operate" required></div>
+      <div class="fld"><label for="f-exp">Current situation</label>
+        <select id="f-exp">
+          <option>I already run lifting / crane work</option>
+          <option>I run a related trade (haulage, construction, rental)</option>
+          <option>I own equipment but no operation yet</option>
+          <option>Starting from scratch</option>
+        </select>
+      </div>
+    </div>
+    <div class="fld"><label for="f-msg">Tell us about it</label>
+      <textarea id="f-msg" placeholder="Your market, any equipment you have, and what you want from the network."></textarea></div>
+    <div class="cf-turnstile" data-sitekey="0x4AAAAAAEHOkJDeg6LbnPaC" data-theme="dark" data-action="franchise"></div>
+    <button class="send" type="submit" id="f-send" style="margin-top:16px">APPLY →</button>
+    <div class="msg" id="f-msg-out"></div>
+  </form>
+</section>
+
+<section class="game">
+  <div class="wrap">
+    <h2>WE ALSO BUILT A GAME ABOUT IT</h2>
+    <p class="sub">CRANEFORMERZ — drive a knuckle-boom truck, grab absurd things, fling them at
+      the horde. Free in your browser, no download.</p>
+    <img class="shot" src="https://play.craneformers.io/shots/z1.jpg" alt="CRANEFORMERZ gameplay" loading="lazy">
+    <div><a class="ghost" href="https://play.craneformers.io/">PLAY IT →</a></div>
+  </div>
+</section>
+
+<footer class="wrap">
+  © 2026 CRANEFORMERZ. Los Angeles, California, USA.
+</footer>
+
+<script>
+// ── Blocky critters wandering across the page ──────────────────────────────
+// Zombies shamble in from the left, sheep bounce in from the right, and now and
+// then a crane grapple drops from the top and yoinks one away.
+const cv = document.getElementById('field'), cx = cv.getContext('2d');
+let W, H;
+const resize = () => { W = cv.width = innerWidth; H = cv.height = innerHeight; };
+resize(); addEventListener('resize', resize);
+
+const R = (a, b) => a + Math.random() * (b - a);
+const critters = [];
+
+function spawn(kind, onscreen) {
+  const dir = kind === 'z' ? 1 : -1;
+  critters.push({
+    kind, dir,
+    // first fill starts ON screen so the page never loads to an empty field
+    x: onscreen ? R(40, W - 40) : (dir === 1 ? -60 : W + 60),
+    y: R(H * 0.58, H * 0.94),
+    sp: kind === 'z' ? R(14, 26) : R(26, 44),
+    s: R(0.8, 1.5), t: R(0, 6), grabbed: false, vy: 0,
+  });
+}
+for (let i = 0; i < 9; i++) spawn(Math.random() < 0.5 ? 'z' : 's', true);
+
+// ── Crane trucks that hunt the critters down and flatten them ──
+const trucks = [], guts = [];
+function spawnTruck(dir) {
+  trucks.push({
+    x: dir === 1 ? -170 : W + 170, dir,
+    y: R(H * 0.60, H * 0.92), sp: R(70, 105), s: R(0.85, 1.2),
+    boom: R(0, 6), wheel: 0,
+  });
+}
+function spawnTruckOn(dir){ spawnTruck(dir); const t=trucks[trucks.length-1]; t.x=R(W*0.15,W*0.85); }
+spawnTruckOn(1); spawnTruckOn(-1);
+
+function splat(x, y, kind) {
+  const cols = kind === 'z' ? ['#b01a1f', '#6e0f12', '#7ab04f'] : ['#f4f4f4', '#e6e6ea', '#d8d8e0'];
+  for (let i = 0; i < 16; i++) {
+    guts.push({ x, y, vx: R(-150, 150), vy: R(-230, -40), s: R(2.5, 6),
+                c: cols[(Math.random() * cols.length) | 0], life: R(.7, 1.5) });
+  }
+}
+
+function box(x, y, w, h, c) { cx.fillStyle = c; cx.fillRect(x | 0, y | 0, Math.ceil(w), Math.ceil(h)); }
+
+function drawTruck(t) {
+  const s = t.s, d = t.dir, bob = Math.sin(t.wheel * 2) * 1.2 * s;
+  const fx = x => t.x + x * d * s;                       // mirror by direction
+  // chassis + flatbed
+  box(fx(-46), t.y - 20 * s + bob, 92 * s, 11 * s, '#2a2f38');
+  // cab
+  box(fx(-46), t.y - 38 * s + bob, 30 * s, 19 * s, '#eef1f4');
+  box(fx(-44), t.y - 34 * s + bob, 12 * s, 9 * s, '#1d2b38');   // windscreen
+  // yellow slew column
+  box(fx(-4), t.y - 40 * s + bob, 14 * s, 21 * s, '#f5c518');
+  // knuckle boom: inner up, outer folded forward
+  cx.save();
+  cx.translate(fx(3), t.y - 40 * s + bob);
+  cx.rotate((-0.72 + Math.sin(t.boom) * 0.14) * -d);
+  box(0, -5 * s, 46 * s * d, 7 * s, '#1e2733');
+  cx.translate(46 * s * d, 0);
+  cx.rotate((1.5 + Math.sin(t.boom * 1.3) * 0.16) * -d);
+  box(0, -4 * s, 40 * s * d, 6 * s, '#1e2733');
+  box(38 * s * d, -6 * s, 12 * s * d, 13 * s, '#c0392b');       // grapple
+  cx.restore();
+  // wheels
+  for (const wx of [-36, -8, 16, 34]) {
+    box(fx(wx) - 6 * s, t.y - 10 * s + bob, 12 * s, 12 * s, '#141519');
+    box(fx(wx) - 2.5 * s, t.y - 6.5 * s + bob, 5 * s, 5 * s, '#9aa2ad');
+  }
+}
+
+function shadow(x, y, w) {
+  cx.save(); cx.globalAlpha *= .32; cx.fillStyle = '#000';
+  cx.beginPath(); cx.ellipse(x, y, w, w * 0.3, 0, 0, 6.3); cx.fill(); cx.restore();
+}
+function drawZombie(c) {
+  shadow(c.x, c.y + 1, 9 * c.s);
+  const s = c.s, w = 9 * s, b = Math.sin(c.t * 6) * 2 * s;
+  box(c.x - w / 2, c.y - 26 * s + b, w, 15 * s, '#5f8c3e');
+  box(c.x - w / 2 + 1 * s, c.y - 38 * s + b, 7 * s, 8 * s, '#86b565');
+  box(c.x - w / 2 + 2.2 * s, c.y - 35.5 * s + b, 1.5 * s, 1.5 * s, '#141a10');
+  box(c.x - w / 2 + 5 * s, c.y - 35.5 * s + b, 1.5 * s, 1.5 * s, '#141a10');
+  box(c.x - w / 2 - 3 * s, c.y - 24 * s + b, 3 * s, 3 * s, '#5f8c3e');   // outstretched arms
+  box(c.x + w / 2, c.y - 24 * s + b, 3 * s, 3 * s, '#5f8c3e');
+  box(c.x - 3 * s, c.y - 11 * s + b, 2.6 * s, 11 * s, '#39414d');
+  box(c.x + 0.6 * s, c.y - 11 * s + b, 2.6 * s, 11 * s, '#39414d');
+}
+function drawSheep(c) {
+  shadow(c.x, c.y + 1, 11 * c.s);
+  const s = c.s, hop = Math.abs(Math.sin(c.t * 5)) * 5 * s;
+  box(c.x - 9 * s, c.y - 20 * s - hop, 18 * s, 12 * s, '#f2f2f2');
+  box(c.x - 11 * s, c.y - 18 * s - hop, 5 * s, 8 * s, '#e6e6ea');
+  box(c.x + 6 * s, c.y - 22 * s - hop, 5 * s, 5 * s, '#f6f6f8');
+  const hx = c.dir === 1 ? c.x + 8 * s : c.x - 13 * s;
+  box(hx, c.y - 22 * s - hop, 6 * s, 6 * s, '#33333a');                    // head
+  box(hx + 1 * s, c.y - 20.5 * s - hop, 1.3 * s, 1.3 * s, '#fff');
+  box(hx - 1.5 * s, c.y - 22.5 * s - hop, 2 * s, 1.6 * s, '#33333a');      // ear
+  box(c.x - 6 * s, c.y - 9 * s - hop, 2.4 * s, 9 * s, '#33333a');
+  box(c.x + 3 * s, c.y - 9 * s - hop, 2.4 * s, 9 * s, '#33333a');
+}
+
+let grapple = null, grabTimer = 5;
+function drawGrapple(g) {
+  cx.strokeStyle = '#141414'; cx.lineWidth = 3;
+  cx.beginPath(); cx.moveTo(g.x, -10); cx.lineTo(g.x, g.y); cx.stroke();
+  box(g.x - 11, g.y, 22, 16, '#1e2733');
+  box(g.x - 13, g.y + 14, 7, 16, '#c0392b');
+  box(g.x + 6, g.y + 14, 7, 16, '#c0392b');
+  box(g.x - 5, g.y - 9, 10, 9, '#f5c518');
+}
+
+let last = performance.now();
+function loop(now) {
+  const dt = Math.min((now - last) / 1000, .05); last = now;
+  cx.clearRect(0, 0, W, H);
+  cx.globalAlpha = .92;
+
+  grabTimer -= dt;
+  if (grabTimer <= 0 && !grapple) {
+    const pool = critters.filter(c => !c.grabbed && c.x > 80 && c.x < W - 80);
+    if (pool.length) {
+      const v = pool[(Math.random() * pool.length) | 0];
+      grapple = { x: v.x, y: -40, victim: v, state: 'down' };
+    }
+    grabTimer = R(6, 11);
+  }
+  if (grapple) {
+    const g = grapple, v = g.victim;
+    if (g.state === 'down') {
+      g.y += 320 * dt;
+      if (g.y >= v.y - 34) { g.state = 'up'; v.grabbed = true; }
+    } else {
+      g.y -= 260 * dt; v.y = g.y + 40; v.x = g.x;
+      if (g.y < -70) { critters.splice(critters.indexOf(v), 1); grapple = null; spawn(Math.random() < .5 ? 'z' : 's'); }
+    }
+  }
+
+  // ── trucks hunt, then splatter ──
+  for (const t of trucks) {
+    t.wheel += dt * 9; t.boom += dt * 1.4;
+    // steer toward the nearest critter ahead of it
+    let best = null, bd = 1e9;
+    for (const c of critters) {
+      if (c.grabbed) continue;
+      const dx = (c.x - t.x) * t.dir;
+      if (dx < 0) continue;
+      const d2 = Math.abs(c.x - t.x) + Math.abs(c.y - t.y) * 2.2;
+      if (d2 < bd) { bd = d2; best = c; }
+    }
+    if (best) t.y += Math.sign(best.y - t.y) * Math.min(46 * dt, Math.abs(best.y - t.y));
+    t.x += t.sp * t.dir * dt;
+
+    for (let i = critters.length - 1; i >= 0; i--) {
+      const c = critters[i];
+      if (c.grabbed) continue;
+      if (Math.abs(c.x - t.x) < 34 * t.s && Math.abs(c.y - t.y) < 20 * t.s) {
+        splat(c.x, c.y - 14 * c.s, c.kind);
+        critters.splice(i, 1);
+        spawn(Math.random() < .5 ? 'z' : 's');
+      }
+    }
+    if (t.dir === 1 && t.x > W + 220) { t.x = -200; t.y = R(H * .60, H * .92); }
+    if (t.dir === -1 && t.x < -220) { t.x = W + 200; t.y = R(H * .60, H * .92); }
+  }
+
+  // ── gore / wool ──
+  for (let i = guts.length - 1; i >= 0; i--) {
+    const g = guts[i];
+    g.vy += 520 * dt; g.x += g.vx * dt; g.y += g.vy * dt; g.life -= dt;
+    if (g.life <= 0) { guts.splice(i, 1); continue; }
+    box(g.x, g.y, g.s, g.s, g.c);
+  }
+
+  for (const c of critters) {
+    c.t += dt;
+    if (!c.grabbed) {
+      c.x += c.sp * c.dir * dt;
+      if (c.dir === 1 && c.x > W + 80) { c.x = -70; c.y = R(H * .58, H * .94); }
+      if (c.dir === -1 && c.x < -80) { c.x = W + 70; c.y = R(H * .58, H * .94); }
+    }
+    c.kind === 'z' ? drawZombie(c) : drawSheep(c);
+  }
+  cx.globalAlpha = 1;
+  for (const t of trucks) drawTruck(t);
+  if (grapple) drawGrapple(grapple);
+  cx.globalAlpha = 1;
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script>
+  // The captcha is verified server-side in the Worker; this only collects the token.
+  // A client-side-only check would be decoration.
+  var ENDPOINT = 'https://craneformerz-quote.genoma-labs.workers.dev/';
+
+  var ATTACH = null;
+  document.getElementById('q-file').addEventListener('change', function (e) {
+    var f = e.target.files && e.target.files[0];
+    var info = document.getElementById('q-fileinfo');
+    ATTACH = null;
+    if (!f) { info.textContent = ''; return; }
+    var MAXV = 20 * 1024 * 1024;
+    if (f.type.indexOf('video') === 0) {
+      if (f.size > MAXV) {
+        info.textContent = 'Video is too large (' + Math.round(f.size / 1048576) + ' MB, max 20 MB). A photo works too.';
+        e.target.value = ''; return;
+      }
+      var r = new FileReader();
+      r.onload = function () { ATTACH = { name: f.name, type: f.type, data: r.result }; 
+        info.textContent = 'Attached: ' + f.name + ' (' + Math.round(f.size / 1048576) + ' MB)'; };
+      r.readAsDataURL(f);
+      return;
+    }
+    // images: downscale in-browser so a 12 MP phone photo does not need uploading whole
+    var img = new Image(), url = URL.createObjectURL(f);
+    img.onload = function () {
+      var max = 1600, sc = Math.min(1, max / Math.max(img.width, img.height));
+      var c = document.createElement('canvas');
+      c.width = Math.round(img.width * sc); c.height = Math.round(img.height * sc);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      ATTACH = { name: f.name, type: 'image/jpeg', data: c.toDataURL('image/jpeg', 0.82) };
+      info.textContent = 'Attached: ' + f.name;
+      URL.revokeObjectURL(url);
+    };
+    img.src = url;
+  });
+
+  document.getElementById('qf').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var msg = document.getElementById('q-msg'), btn = document.getElementById('q-send');
+    var g = function (id) { return (document.getElementById(id) || {}).value || ''; };
+    var tk = (window.turnstile && turnstile.getResponse()) || '';
+    if (!tk) { msg.className = 'msg err'; msg.textContent = 'Please complete the check below the form.'; return; }
+    btn.disabled = true; msg.className = 'msg'; msg.textContent = 'Sending…';
+    fetch(ENDPOINT, {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        name: g('q-name'), email: g('q-email'), company: g('q-company'),
+        jobtype: g('q-jobtype'), location: g('q-location'), date: g('q-date'),
+        weight: g('q-weight'), height: g('q-height'), details: g('q-details'),
+        site: g('q-site'), attachment: ATTACH, turnstile: tk,
+      }),
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      if (j.ok) {
+        msg.className = 'msg ok';
+        msg.textContent = 'Sent. We have your request and will come back to you shortly.';
+        document.getElementById('qf').reset();
+        ATTACH = null;
+        document.getElementById('q-fileinfo').textContent = '';
+      } else {
+        msg.className = 'msg err';
+        msg.textContent = j.error === 'captcha failed'
+          ? 'The check did not pass — please try again.'
+          : (j.error || 'Something went wrong. Please try again.');
+        btn.disabled = false;
+      }
+      if (window.turnstile) turnstile.reset();
+    }).catch(function () {
+      msg.className = 'msg err';
+      msg.textContent = 'Network error — please try again.';
+      btn.disabled = false;
+    });
+  });
+
+  // Franchise applications go to the same endpoint with kind=franchise so both
+  // land in one place and neither can be silently dropped.
+  document.getElementById('ff').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var out = document.getElementById('f-msg-out'), btn = document.getElementById('f-send');
+    var g = function (id) { return (document.getElementById(id) || {}).value || ''; };
+    var widgets = document.querySelectorAll('.cf-turnstile');
+    var tk = (window.turnstile && turnstile.getResponse(widgets[1])) || '';
+    if (!tk) { out.className = 'msg err'; out.textContent = 'Please complete the check below the form.'; return; }
+    btn.disabled = true; out.className = 'msg'; out.textContent = 'Sending…';
+    fetch(ENDPOINT, {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        kind: 'franchise', name: g('f-name'), email: g('f-email'),
+        location: g('f-city'), jobtype: g('f-exp'), details: g('f-msg'), turnstile: tk,
+      }),
+    }).then(function (r) { return r.json(); }).then(function (j) {
+      if (j.ok) {
+        out.className = 'msg ok';
+        out.textContent = 'Application received. We will be in touch.';
+        document.getElementById('ff').reset();
+      } else {
+        out.className = 'msg err'; out.textContent = j.error || 'Something went wrong.';
+        btn.disabled = false;
+      }
+      if (window.turnstile) turnstile.reset(widgets[1]);
+    }).catch(function () {
+      out.className = 'msg err'; out.textContent = 'Network error — please try again.';
+      btn.disabled = false;
+    });
+  });
+</script>

@@ -233,6 +233,18 @@
     color: #7fc242; text-shadow: 0 2px 6px rgba(0,0,0,.9); display: none;
   }
   #netbar .code { color: #ffd24a; font-size: 15px; }
+
+  /* ── RESPONSIVE HARDENING ──────────────────────────────────────────────────
+     The logo's blood drips are absolutely positioned by percentage and ran past
+     the right edge on a rotated phone, giving the page a horizontal scrollbar
+     (measured: scrollWidth 970 vs clientWidth 915 at 915x412). Clip the axis and
+     let grid children actually shrink. */
+  html,body{overflow-x:hidden;max-width:100%}
+  .frow{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .frow > *,.fld{min-width:0}
+  .fld input,.fld textarea,.fld select{max-width:100%;min-width:0}
+  @media(max-width:900px){.frow{grid-template-columns:1fr}}
+  img,canvas,svg,iframe{max-width:100%}
 </style>
 <style>
   /* Background mode: the landing page embeds the real game as its hero backdrop.
