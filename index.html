@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CRANEFORMERZ — play it in your browser</title>
+<meta name="description" content="Drive a knuckle-boom crane truck. Grab sharks, cows and lollipops. Fling them at the horde. Playable free in your browser — no download." />
+<meta property="og:title" content="CRANEFORMERZ — playable in your browser" />
+<meta property="og:description" content="Z is for Zombies. S is for Sheeps. Free browser demo, no download." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Wallpoet&family=Bungee&family=Bungee+Shade&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  :root{--y:#f2c200;--z:#7fc242;--s:#e9e9f2;--ink:#0b0e13}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:#fff;font-family:'Rajdhani',sans-serif;overflow-x:hidden}
+
+  /* critter field sits behind everything */
+  #field{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+  .wrap{position:relative;z-index:2;max-width:1080px;margin:0 auto;padding:0 22px}
+
+  header{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative}
+  .presents{font-size:14px;letter-spacing:11px;color:var(--y);font-weight:700;margin-bottom:10px;padding-left:11px}
+  .word{font-family:'Wallpoet',sans-serif;font-size:clamp(38px,9vw,96px);color:var(--y);
+    -webkit-text-stroke:4px #1a1207;paint-order:stroke fill;letter-spacing:2px;
+    text-shadow:0 5px 0 #a86a00,0 9px 0 #6d4300,0 14px 26px rgba(0,0,0,.85);transform:skewX(-6deg);display:inline-block}
+  .zed{font-family:'Bungee Shade',sans-serif;font-size:clamp(48px,11vw,120px);color:var(--z);
+    -webkit-text-stroke:5px #14200a;paint-order:stroke fill;display:inline-block;position:relative;
+    text-shadow:0 5px 0 #3f6b1f,0 10px 0 #24400f,0 0 30px rgba(150,220,90,.55),0 16px 30px rgba(0,0,0,.9);
+    transform:skewX(-6deg) rotate(7deg) translateY(6px);animation:lurch 3.2s ease-in-out infinite}
+  @keyframes lurch{0%,100%{transform:skewX(-6deg) rotate(7deg) translateY(6px)}50%{transform:skewX(-6deg) rotate(4.5deg) translateY(2px) scale(1.03)}}
+  .drip{position:absolute;background:#b01a1f;border-radius:0 0 55% 55%;animation:drip 2.6s ease-in infinite}
+  .drip::after{content:'';position:absolute;left:50%;transform:translateX(-50%);bottom:-7px;width:7px;height:7px;background:#b01a1f;border-radius:50%}
+  @keyframes drip{0%{transform:scaleY(.35);opacity:0}35%{transform:scaleY(1);opacity:1}100%{transform:scaleY(1.5) translateY(16px);opacity:0}}
+  .tag{font-family:'Bungee',sans-serif;font-size:13px;letter-spacing:7px;color:rgba(255,255,255,.8);margin-top:16px}
+
+  .live{display:inline-flex;align-items:center;gap:9px;margin:26px 0 6px;padding:7px 15px;border-radius:999px;
+    background:rgba(127,194,66,.14);border:1px solid rgba(127,194,66,.5);font-weight:700;letter-spacing:2px;font-size:13px;color:#a8e06a}
+  .dot{width:9px;height:9px;border-radius:50%;background:#7fc242;box-shadow:0 0 10px #7fc242;animation:pulse 1.6s infinite}
+  @keyframes pulse{50%{opacity:.35}}
+  .lede{font-size:clamp(17px,2.4vw,21px);max-width:620px;color:rgba(255,255,255,.86);margin:14px auto 0;line-height:1.5}
+
+  .cta{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin-top:30px}
+  .btn{font-family:'Bungee',sans-serif;font-size:15px;letter-spacing:1.5px;padding:17px 30px;border-radius:13px;
+    text-decoration:none;border:2px solid transparent;transition:transform .1s,box-shadow .2s;display:inline-block}
+  .btn:active{transform:scale(.97)}
+  .btn-z{background:var(--y);color:#1a1207;box-shadow:0 8px 26px rgba(242,194,0,.3)}
+  .btn-z:hover{box-shadow:0 10px 34px rgba(242,194,0,.5)}
+  .btn-s{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.35)}
+  .btn-s:hover{background:rgba(255,255,255,.18)}
+  .nodl{margin-top:14px;font-size:14px;color:rgba(255,255,255,.5);letter-spacing:1px}
+
+  section{padding:86px 0}
+  h2{font-family:'Bungee',sans-serif;font-size:clamp(21px,3.4vw,31px);text-align:center;margin-bottom:12px}
+  .sub{text-align:center;color:rgba(255,255,255,.6);max-width:640px;margin:0 auto 42px;font-size:17px;line-height:1.55}
+
+  .eds{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:20px}
+  .ed{border-radius:18px;padding:30px;border:2px solid rgba(255,255,255,.12);background:#11151b;
+    transition:border-color .2s,transform .2s}
+  .ed:hover{transform:translateY(-4px)}
+  .ed.z:hover{border-color:var(--z)} .ed.s:hover{border-color:var(--s)}
+  .ed .badge{font-family:'Bungee Shade',sans-serif;font-size:52px;line-height:1}
+  .ed.z .badge{color:var(--z)} .ed.s .badge{color:var(--s)}
+  .ed h3{font-family:'Bungee',sans-serif;font-size:19px;margin:8px 0 10px}
+  .ed p{color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:18px}
+  .ed a{font-family:'Bungee',sans-serif;font-size:13px;letter-spacing:1px;text-decoration:none;color:var(--y)}
+
+  .feat{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px}
+  .f{padding:24px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09)}
+  .f .ico{font-size:30px;margin-bottom:10px}
+  .f b{display:block;font-family:'Bungee',sans-serif;font-size:14px;margin-bottom:7px;letter-spacing:.5px}
+  .f span{color:rgba(255,255,255,.65);font-size:15px;line-height:1.5}
+
+  .soon{text-align:center;border-top:1px solid rgba(255,255,255,.1);padding-top:60px}
+  .chips{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+  .chip{padding:11px 20px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);
+    font-family:'Bungee',sans-serif;font-size:12px;letter-spacing:1.5px;color:rgba(255,255,255,.75)}
+
+  .shots{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:16px 0 18px}
+  .shot{border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,.1);
+    aspect-ratio:16/10;background:#0a0d10;position:relative}
+  .shot svg,.shot img{display:block;width:100%;height:100%;object-fit:cover}
+  .shot span{position:absolute;left:7px;bottom:6px;font-family:'Rajdhani',sans-serif;
+    font-size:9px;font-weight:700;letter-spacing:1.6px;color:rgba(255,255,255,.82);
+    text-shadow:0 1px 3px #000}
+
+
+  /* ── Live game backdrop ── */
+  #gamebg{position:absolute;inset:0;width:100%;height:100%;border:0;pointer-events:none;
+    opacity:.42;filter:saturate(.85) contrast(1.05);z-index:0}
+  #gamebg-wrap{position:absolute;inset:0;overflow:hidden;z-index:0}
+  #gamebg-wrap::after{content:"";position:absolute;inset:0;z-index:1;
+    background:radial-gradient(ellipse at 50% 40%,rgba(10,13,16,.35) 0%,rgba(10,13,16,.82) 62%,#0a0d10 100%)}
+  #hero{position:relative}
+  #hero > .wrap,#hero .tag,#hero h1{position:relative;z-index:2}
+  @media(max-width:760px){#gamebg{opacity:.3}}
+
+
+
+  .mob{display:flex;align-items:flex-end;gap:7px;margin:2px 0 0 12px}
+  .mob svg{display:block;filter:drop-shadow(0 2px 4px rgba(0,0,0,.55))}
+  .mob .m2{animation:bob 1.5s ease-in-out infinite .2s}
+  .mob .m1{animation:bob 1.7s ease-in-out infinite}
+  .mob .m3{animation:bob 1.3s ease-in-out infinite .4s}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  .edhead{display:flex;align-items:center}
+
+  /* ── SPLATTER ────────────────────────────────────────────────────────────
+     The studio is called Splatter Games. Blood should be part of the furniture,
+     not just a logo: drips off section edges, spatter behind headings, and a
+     smear that wipes across the buttons on hover. */
+  .drip{position:relative}
+  .drip::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:26px;z-index:3;
+    background-repeat:repeat-x;background-size:120px 26px;
+    background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='26'%3E%3Cpath d='M0 0h120v6H0z' fill='%23b01a1f'/%3E%3Cpath d='M8 6c0 6 4 7 4 13s-4 5-4 0zM31 6c0 9 5 10 5 16s-5 4-5-2zM58 6c0 5 3 6 3 10s-3 4-3-1zM82 6c0 11 6 12 6 18s-6 3-6-4zM104 6c0 7 4 8 4 13s-4 4-4-2z' fill='%23b01a1f'/%3E%3Ccircle cx='20' cy='23' r='2.4' fill='%23b01a1f'/%3E%3Ccircle cx='69' cy='25' r='1.8' fill='%23b01a1f'/%3E%3Ccircle cx='95' cy='21' r='1.5' fill='%23b01a1f'/%3E%3C/svg%3E")}
+  .drip.thin::after{height:18px;background-size:120px 18px;opacity:.72}
+
+  /* spatter blobs dropped behind section headings */
+  .splatbg{position:relative}
+  .splatbg::before{content:"";position:absolute;width:340px;height:300px;left:50%;top:-40px;
+    transform:translateX(-50%);pointer-events:none;z-index:0;opacity:.14;
+    background-repeat:no-repeat;background-size:contain;
+    background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 340 300'%3E%3Cg fill='%23b01a1f'%3E%3Cellipse cx='170' cy='140' rx='96' ry='74'/%3E%3Ccircle cx='58' cy='72' r='20'/%3E%3Ccircle cx='286' cy='96' r='27'/%3E%3Ccircle cx='96' cy='234' r='16'/%3E%3Ccircle cx='252' cy='226' r='22'/%3E%3Ccircle cx='30' cy='168' r='11'/%3E%3Ccircle cx='312' cy='176' r='9'/%3E%3Ccircle cx='168' cy='22' r='14'/%3E%3Ccircle cx='176' cy='284' r='12'/%3E%3C/g%3E%3C/svg%3E")}
+  .splatbg > *{position:relative;z-index:1}
+
+  /* blood smear wipes across on hover */
+  .btn{position:relative;overflow:hidden}
+  .btn::after{content:"";position:absolute;inset:0;opacity:0;transition:opacity .18s;
+    pointer-events:none;background-repeat:no-repeat;background-size:cover;
+    background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 60'%3E%3Cg fill='%23b01a1f' opacity='.55'%3E%3Cellipse cx='60' cy='30' rx='54' ry='19'/%3E%3Ccircle cx='142' cy='22' r='13'/%3E%3Ccircle cx='170' cy='38' r='8'/%3E%3Ccircle cx='190' cy='26' r='4'/%3E%3C/g%3E%3C/svg%3E")}
+  .btn:hover::after{opacity:1}
+
+  /* the wordmark bleeds a little */
+  h1::after{content:"";position:absolute;left:50%;bottom:-16px;width:190px;height:34px;
+    transform:translateX(-50%);pointer-events:none;opacity:.85;
+    background-repeat:no-repeat;background-size:contain;
+    background-image:url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 190 34'%3E%3Cg fill='%23b01a1f'%3E%3Cpath d='M36 0c0 12 5 13 5 21s-5 6-5-1zM92 0c0 16 7 17 7 26s-7 5-7-6zM148 0c0 9 4 10 4 17s-4 4-4-3z'/%3E%3Ccircle cx='60' cy='27' r='3'/%3E%3Ccircle cx='120' cy='31' r='2.2'/%3E%3C/g%3E%3C/svg%3E")}
+  h1{position:relative}
+
+  /* ── Contact ── */
+  #contact{border-top:1px solid rgba(255,255,255,.1)}
+  .eyebrow{font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:4px;color:var(--y);margin-bottom:14px}
+  .hello{font-family:'Bungee',sans-serif;font-size:clamp(34px,6vw,58px);line-height:1;margin-bottom:20px}
+  .hello span{color:var(--y)}
+  .cintro{font-size:18px;line-height:1.65;color:rgba(255,255,255,.72);max-width:620px;margin-bottom:36px}
+  .frow{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:640px){.frow{grid-template-columns:1fr}}
+  .fld{margin-bottom:18px}
+  .fld label{display:block;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;
+    letter-spacing:2.5px;color:rgba(255,255,255,.55);margin-bottom:8px}
+  .fld input,.fld textarea{width:100%;padding:15px 17px;border-radius:12px;
+    background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);color:#fff;
+    font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:600;transition:border-color .15s,background .15s}
+  .fld input::placeholder,.fld textarea::placeholder{color:rgba(255,255,255,.3)}
+  .fld input:focus,.fld textarea:focus{outline:none;border-color:var(--y);background:rgba(255,255,255,.08)}
+  .fld textarea{min-height:160px;resize:vertical}
+  .send{font-family:'Bungee',sans-serif;font-size:15px;letter-spacing:1px;padding:16px 32px;border:none;
+    border-radius:999px;background:var(--y);color:#1a1207;cursor:pointer;transition:transform .1s,box-shadow .2s;
+    box-shadow:0 8px 24px rgba(242,194,0,.26)}
+  .send:hover{box-shadow:0 10px 32px rgba(242,194,0,.44)}
+  .send:active{transform:scale(.98)}
+  .fnote{margin-top:14px;font-size:14px;color:rgba(255,255,255,.42)}
+  .fnote a{color:var(--y);text-decoration:none}
+
+  /* ── Studio footer ── */
+  footer{border-top:1px solid rgba(255,255,255,.1);margin-top:40px;padding:54px 0 40px;text-align:center}
+  .studio{display:inline-flex;align-items:center;gap:11px;margin-bottom:6px}
+  .splat{position:relative;width:34px;height:34px;flex:0 0 34px}
+  .splat i{position:absolute;background:#c8202a;border-radius:50%}
+  .studio-name{font-family:'Bungee',sans-serif;font-size:25px;letter-spacing:2px;color:#fff;line-height:1}
+  .studio-name em{font-style:normal;color:#c8202a}
+  .studio-tag{font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:5px;
+    color:rgba(255,255,255,.42);margin-bottom:26px;font-weight:700}
+  .fnav{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin-bottom:28px}
+  .fnav a{color:rgba(255,255,255,.62);text-decoration:none;font-size:15px;font-weight:600;letter-spacing:.6px;
+    transition:color .15s}
+  .fnav a:hover{color:var(--y)}
+  .legal{font-size:13px;line-height:2;color:rgba(255,255,255,.34);letter-spacing:.6px}
+  .legal .ent{color:rgba(255,255,255,.5)}
+  .legal .loc{color:rgba(255,255,255,.44)}
+
+  /* ── RESPONSIVE HARDENING ──────────────────────────────────────────────────
+     The logo's blood drips are absolutely positioned by percentage and ran past
+     the right edge on a rotated phone, giving the page a horizontal scrollbar
+     (measured: scrollWidth 970 vs clientWidth 915 at 915x412). Clip the axis and
+     let grid children actually shrink. */
+  html,body{overflow-x:hidden;max-width:100%}
+  .frow{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .frow > *,.fld{min-width:0}
+  .fld input,.fld textarea,.fld select{max-width:100%;min-width:0}
+  @media(max-width:900px){.frow{grid-template-columns:1fr}}
+  img,canvas,svg,iframe{max-width:100%}
+</style>
+<!-- Cloudflare Web Analytics: privacy-first, no cookies, so no consent banner needed. -->
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "8e75b1403359441aa2ae403be204dbe7"}'></script>
+</head>
+<body>
+<canvas id="field"></canvas>
+<div id="gamebg-wrap"><iframe id="gamebg" src="/play/?mode=z&bg=1" title="CRANEFORMERZ gameplay" loading="lazy" tabindex="-1" aria-hidden="true" scrolling="no"></iframe></div>
+
+<header>
+  <div class="wrap">
+    <div>
+      <span class="word">CRANEFORMER</span><span class="zed">Z<i class="drip" style="left:16%;top:78%;width:9px;height:20px;animation-delay:.2s"></i><i class="drip" style="left:52%;top:86%;width:7px;height:15px;animation-delay:1.1s"></i><i class="drip" style="left:80%;top:72%;width:8px;height:24px;animation-delay:1.8s"></i></span>
+    </div>
+    <div class="tag">Z IS FOR ZOMBIES</div>
+
+    <div class="live"><span class="dot"></span>NOW PLAYABLE IN YOUR BROWSER</div>
+    <p class="lede">Drive a knuckle-boom crane truck. Grab a shark, a cow, a port-a-potty, a giant lollipop — and fling it into the horde.</p>
+
+    <div class="cta">
+      <a class="btn btn-z" href="/play/?mode=z">🧟 PLAY — ZOMBIES</a>
+      <a class="btn btn-s" href="/play/?mode=s">🐑 PLAY — SHEEPS</a>
+    </div>
+    <div class="nodl">Free demo · no download · works on phone</div>
+  </div>
+</header>
+
+<section class="wrap splatbg">
+  <h2>TWO EDITIONS</h2>
+  <p class="sub">Same crane, same physics, same chaos. Pick your horde.</p>
+  <div class="eds">
+    <div class="ed z">
+      <div class="edhead"><div class="badge">Z</div><div class="mob"><svg class="m1" width="22" height="34" viewBox="0 0 22 34" aria-hidden="true"><rect x="6" y="0" width="11" height="9" fill="#6fd45a"/><rect x="8" y="3" width="2" height="2" fill="#101a12"/><rect x="13" y="3" width="2" height="2" fill="#101a12"/><rect x="8" y="6" width="7" height="1.5" fill="#2f5d28"/><rect x="5" y="10" width="13" height="13" fill="#5cc24a"/><rect x="0" y="11" width="6" height="4" fill="#6fd45a"/><rect x="17" y="11" width="5" height="4" fill="#6fd45a"/><rect x="6" y="24" width="4" height="10" fill="#3f8f33"/><rect x="13" y="24" width="4" height="10" fill="#3f8f33"/></svg><svg class="m2" width="22" height="34" viewBox="0 0 22 34" aria-hidden="true"><rect x="6" y="0" width="11" height="9" fill="#6fd45a"/><rect x="8" y="3" width="2" height="2" fill="#101a12"/><rect x="13" y="3" width="2" height="2" fill="#101a12"/><rect x="8" y="6" width="7" height="1.5" fill="#2f5d28"/><rect x="5" y="10" width="13" height="13" fill="#5cc24a"/><rect x="0" y="11" width="6" height="4" fill="#6fd45a"/><rect x="17" y="11" width="5" height="4" fill="#6fd45a"/><rect x="6" y="24" width="4" height="10" fill="#3f8f33"/><rect x="13" y="24" width="4" height="10" fill="#3f8f33"/></svg><svg class="m3" width="22" height="34" viewBox="0 0 22 34" aria-hidden="true"><rect x="6" y="0" width="11" height="9" fill="#6fd45a"/><rect x="8" y="3" width="2" height="2" fill="#101a12"/><rect x="13" y="3" width="2" height="2" fill="#101a12"/><rect x="8" y="6" width="7" height="1.5" fill="#2f5d28"/><rect x="5" y="10" width="13" height="13" fill="#5cc24a"/><rect x="0" y="11" width="6" height="4" fill="#6fd45a"/><rect x="17" y="11" width="5" height="4" fill="#6fd45a"/><rect x="6" y="24" width="4" height="10" fill="#3f8f33"/><rect x="13" y="24" width="4" height="10" fill="#3f8f33"/></svg></div></div>
+      <h3>ZOMBIES</h3>
+      <div class="shots">
+        <div class="shot"><img src="/shots/z1.jpg" alt="CRANEFORMERZ gameplay" loading="lazy" width="720" height="321"><span>GRAB &amp; FLING</span></div>
+        <div class="shot"><img src="/shots/z2.jpg" alt="CRANEFORMERZ gameplay" loading="lazy" width="720" height="321"><span>THE HORDE</span></div>
+      </div>
+      <p>Shamblers, runners, brutes, a motorcycle zombie and a horned MEGA BOSS every fifth wave. Chunky cubes of blood. Bomber drones overhead.</p>
+      <a href="/play/?mode=z">PLAY Z →</a>
+    </div>
+    <div class="ed s">
+      <div class="edhead"><div class="badge">S</div><div class="mob"><svg class="m1" width="30" height="26" viewBox="0 0 30 26" aria-hidden="true"><rect x="4" y="4" width="20" height="13" fill="#fafafa"/><rect x="2" y="7" width="4" height="7" fill="#f0f0f4"/><rect x="22" y="3" width="8" height="8" fill="#2b2f36"/><rect x="24" y="5" width="1.6" height="1.6" fill="#fff"/><rect x="27" y="5" width="1.6" height="1.6" fill="#fff"/><rect x="6" y="17" width="3.4" height="9" fill="#2b2f36"/><rect x="18" y="17" width="3.4" height="9" fill="#2b2f36"/></svg><svg class="m2" width="30" height="26" viewBox="0 0 30 26" aria-hidden="true"><rect x="4" y="4" width="20" height="13" fill="#fafafa"/><rect x="2" y="7" width="4" height="7" fill="#f0f0f4"/><rect x="22" y="3" width="8" height="8" fill="#2b2f36"/><rect x="24" y="5" width="1.6" height="1.6" fill="#fff"/><rect x="27" y="5" width="1.6" height="1.6" fill="#fff"/><rect x="6" y="17" width="3.4" height="9" fill="#2b2f36"/><rect x="18" y="17" width="3.4" height="9" fill="#2b2f36"/></svg><svg class="m3" width="30" height="26" viewBox="0 0 30 26" aria-hidden="true"><rect x="4" y="4" width="20" height="13" fill="#fafafa"/><rect x="2" y="7" width="4" height="7" fill="#f0f0f4"/><rect x="22" y="3" width="8" height="8" fill="#2b2f36"/><rect x="24" y="5" width="1.6" height="1.6" fill="#fff"/><rect x="27" y="5" width="1.6" height="1.6" fill="#fff"/><rect x="6" y="17" width="3.4" height="9" fill="#2b2f36"/><rect x="18" y="17" width="3.4" height="9" fill="#2b2f36"/></svg></div></div>
+      <h3>SHEEPS</h3>
+      <div class="shots">
+        <div class="shot"><img src="/shots/s1.jpg" alt="CRANEFORMERZ gameplay" loading="lazy" width="720" height="321"><span>GRAB &amp; FLING</span></div>
+        <div class="shot"><img src="/shots/s2.jpg" alt="CRANEFORMERZ gameplay" loading="lazy" width="720" height="321"><span>THE FLOCK</span></div>
+      </div>
+      <p>The family-friendly cut. Lambs, rams, a woolly tank and a MEGA RAM. Wool puffs instead of blood, and everything says baa. Same carnage, zero gore.</p>
+      <a href="/play/?mode=s">PLAY S →</a>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2>WHAT YOU DO</h2>
+  <p class="sub">Point where you want the grapple. Click to grab. Swing hard.</p>
+  <div class="feat">
+    <div class="f"><div class="ico">🏗️</div><b>REAL KNUCKLE BOOM</b><span>Modelled on a COPMA 450: slew column, folding knuckle, telescopic sections, grapple saw.</span></div>
+    <div class="f"><div class="ico">🦈</div><b>ABSURD AMMO</b><span>Sharks, cows, ice creams, lollipops, cars, ducks, gnomes. If it's loose, you can throw it.</span></div>
+    <div class="f"><div class="ico">🧟</div><b>GRAB THE HORDE</b><span>Pluck a zombie off the ground and hurl it into its friends. The boom itself is a weapon.</span></div>
+    <div class="f"><div class="ico">🚚</div><b>ALLY CRANES</b><span>Drive close to a parked rig and it joins you, lobbing junk at whatever's nearest.</span></div>
+  </div>
+</section>
+
+<section class="wrap soon drip thin">
+  <h2>COMING NEXT</h2>
+  <p class="sub">The browser demo is the preview. The full game goes further.</p>
+  <div class="chips">
+    <span class="chip">STEAM — SOON</span>
+    <span class="chip">iOS / ANDROID — SOON</span>
+    <span class="chip">ONLINE ROOMS — IN TESTING</span>
+  </div>
+</section>
+
+<section id="contact" class="wrap splatbg">
+  <div class="eyebrow">CONTACT</div>
+  <h2 class="hello" style="text-align:left">Say <span>hello.</span></h2>
+  <p class="cintro">We're a small studio and we read everything. Publishing, press, festivals,
+    partnerships — or just to tell us which absurd object you want to fling at the horde next.</p>
+
+  <form id="cform">
+    <div class="frow">
+      <div class="fld"><label for="cname">NAME</label><input id="cname" required placeholder="Your name"></div>
+      <div class="fld"><label for="cmail">EMAIL</label><input id="cmail" type="email" required placeholder="you@studio.com"></div>
+    </div>
+    <div class="fld"><label for="csubj">SUBJECT</label><input id="csubj" placeholder="Press, publishing, partnership, or anything else"></div>
+    <div class="fld"><label for="cmsg">MESSAGE</label><textarea id="cmsg" required placeholder="Tell us what's on your mind."></textarea></div>
+    <button class="send" type="submit">Send message →</button>
+    <div class="fnote">Opens in your mail app — we'll reply from the studio.</div>
+  </form>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="studio">
+      <span class="splat" aria-hidden="true">
+        <i style="left:9px;top:6px;width:17px;height:17px"></i>
+        <i style="left:2px;top:16px;width:8px;height:8px"></i>
+        <i style="left:24px;top:19px;width:6px;height:6px"></i>
+        <i style="left:14px;top:25px;width:5px;height:5px"></i>
+        <i style="left:21px;top:2px;width:4px;height:4px"></i>
+      </span>
+      <span class="studio-name">SPLATTER <em>GAMES</em></span>
+    </div>
+    <div class="studio-tag">INTERACTIVE ENTERTAINMENT</div>
+
+    <nav class="fnav">
+      <a href="/play/?mode=z">Play — Zombies</a>
+      <a href="/play/?mode=s">Play — Sheeps</a>
+      <a href="/press.html">Press Kit</a>
+      <a href="mailto:hello@craneformers.io">Contact</a>
+    </nav>
+
+    <div class="legal">
+      © 2026 <span class="ent">SPLATTER GAMES</span>. All rights reserved.<br>
+      <span class="loc">Los Angeles, California, USA</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Contact form: this is a static site with no backend, so submitting composes a
+// mailto: rather than faking a server POST that would silently drop messages.
+document.getElementById('cform').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const g = id => document.getElementById(id).value.trim();
+  const name = g('cname'), mail = g('cmail'), subj = g('csubj') || 'Hello from craneformers.io';
+  const body = `${g('cmsg')}
+
+—
+${name}
+${mail}
+via craneformers.io`;
+  // Address is base64-assembled at runtime so it isn't sitting in the markup for
+  // scrapers. NOTE: this is obfuscation, not secrecy - anyone reading this file can
+  // decode it. Only a form backend (Formspree/Worker) truly hides the address.
+  const to = atob('bmljb2xhQGdlbm9tYS1sYWJzLmNvbQ==');
+  location.href = 'mailto:' + to
+    + '?subject=' + encodeURIComponent(subj)
+    + '&body=' + encodeURIComponent(body);
+});
+
+// ── Blocky critters wandering across the page ──────────────────────────────
+// Zombies shamble in from the left, sheep bounce in from the right, and now and
+// then a crane grapple drops from the top and yoinks one away.
+const cv = document.getElementById('field'), cx = cv.getContext('2d');
+let W, H;
+const resize = () => { W = cv.width = innerWidth; H = cv.height = innerHeight; };
+resize(); addEventListener('resize', resize);
+
+const R = (a, b) => a + Math.random() * (b - a);
+const critters = [];
+
+function spawn(kind, onscreen) {
+  const dir = kind === 'z' ? 1 : -1;
+  critters.push({
+    kind, dir,
+    // first fill starts ON screen so the page never loads to an empty field
+    x: onscreen ? R(40, W - 40) : (dir === 1 ? -60 : W + 60),
+    y: R(H * 0.58, H * 0.94),
+    sp: kind === 'z' ? R(14, 26) : R(26, 44),
+    s: R(0.8, 1.5), t: R(0, 6), grabbed: false, vy: 0,
+  });
+}
+for (let i = 0; i < 9; i++) spawn(Math.random() < 0.5 ? 'z' : 's', true);
+
+// ── Crane trucks that hunt the critters down and flatten them ──
+const trucks = [], guts = [];
+function spawnTruck(dir) {
+  trucks.push({
+    x: dir === 1 ? -170 : W + 170, dir,
+    y: R(H * 0.60, H * 0.92), sp: R(70, 105), s: R(0.85, 1.2),
+    boom: R(0, 6), wheel: 0,
+  });
+}
+function spawnTruckOn(dir){ spawnTruck(dir); const t=trucks[trucks.length-1]; t.x=R(W*0.15,W*0.85); }
+spawnTruckOn(1); spawnTruckOn(-1);
+
+function splat(x, y, kind) {
+  const cols = kind === 'z' ? ['#b01a1f', '#6e0f12', '#7ab04f'] : ['#f4f4f4', '#e6e6ea', '#d8d8e0'];
+  for (let i = 0; i < 16; i++) {
+    guts.push({ x, y, vx: R(-150, 150), vy: R(-230, -40), s: R(2.5, 6),
+                c: cols[(Math.random() * cols.length) | 0], life: R(.7, 1.5) });
+  }
+}
+
+function box(x, y, w, h, c) { cx.fillStyle = c; cx.fillRect(x | 0, y | 0, Math.ceil(w), Math.ceil(h)); }
+
+function drawTruck(t) {
+  const s = t.s, d = t.dir, bob = Math.sin(t.wheel * 2) * 1.2 * s;
+  const fx = x => t.x + x * d * s;                       // mirror by direction
+  // chassis + flatbed
+  box(fx(-46), t.y - 20 * s + bob, 92 * s, 11 * s, '#2a2f38');
+  // cab
+  box(fx(-46), t.y - 38 * s + bob, 30 * s, 19 * s, '#eef1f4');
+  box(fx(-44), t.y - 34 * s + bob, 12 * s, 9 * s, '#1d2b38');   // windscreen
+  // yellow slew column
+  box(fx(-4), t.y - 40 * s + bob, 14 * s, 21 * s, '#f5c518');
+  // knuckle boom: inner up, outer folded forward
+  cx.save();
+  cx.translate(fx(3), t.y - 40 * s + bob);
+  cx.rotate((-0.72 + Math.sin(t.boom) * 0.14) * -d);
+  box(0, -5 * s, 46 * s * d, 7 * s, '#1e2733');
+  cx.translate(46 * s * d, 0);
+  cx.rotate((1.5 + Math.sin(t.boom * 1.3) * 0.16) * -d);
+  box(0, -4 * s, 40 * s * d, 6 * s, '#1e2733');
+  box(38 * s * d, -6 * s, 12 * s * d, 13 * s, '#c0392b');       // grapple
+  cx.restore();
+  // wheels
+  for (const wx of [-36, -8, 16, 34]) {
+    box(fx(wx) - 6 * s, t.y - 10 * s + bob, 12 * s, 12 * s, '#141519');
+    box(fx(wx) - 2.5 * s, t.y - 6.5 * s + bob, 5 * s, 5 * s, '#9aa2ad');
+  }
+}
+
+function shadow(x, y, w) {
+  cx.save(); cx.globalAlpha *= .32; cx.fillStyle = '#000';
+  cx.beginPath(); cx.ellipse(x, y, w, w * 0.3, 0, 0, 6.3); cx.fill(); cx.restore();
+}
+function drawZombie(c) {
+  shadow(c.x, c.y + 1, 9 * c.s);
+  const s = c.s, w = 9 * s, b = Math.sin(c.t * 6) * 2 * s;
+  box(c.x - w / 2, c.y - 26 * s + b, w, 15 * s, '#5f8c3e');
+  box(c.x - w / 2 + 1 * s, c.y - 38 * s + b, 7 * s, 8 * s, '#86b565');
+  box(c.x - w / 2 + 2.2 * s, c.y - 35.5 * s + b, 1.5 * s, 1.5 * s, '#141a10');
+  box(c.x - w / 2 + 5 * s, c.y - 35.5 * s + b, 1.5 * s, 1.5 * s, '#141a10');
+  box(c.x - w / 2 - 3 * s, c.y - 24 * s + b, 3 * s, 3 * s, '#5f8c3e');   // outstretched arms
+  box(c.x + w / 2, c.y - 24 * s + b, 3 * s, 3 * s, '#5f8c3e');
+  box(c.x - 3 * s, c.y - 11 * s + b, 2.6 * s, 11 * s, '#39414d');
+  box(c.x + 0.6 * s, c.y - 11 * s + b, 2.6 * s, 11 * s, '#39414d');
+}
+function drawSheep(c) {
+  shadow(c.x, c.y + 1, 11 * c.s);
+  const s = c.s, hop = Math.abs(Math.sin(c.t * 5)) * 5 * s;
+  box(c.x - 9 * s, c.y - 20 * s - hop, 18 * s, 12 * s, '#f2f2f2');
+  box(c.x - 11 * s, c.y - 18 * s - hop, 5 * s, 8 * s, '#e6e6ea');
+  box(c.x + 6 * s, c.y - 22 * s - hop, 5 * s, 5 * s, '#f6f6f8');
+  const hx = c.dir === 1 ? c.x + 8 * s : c.x - 13 * s;
+  box(hx, c.y - 22 * s - hop, 6 * s, 6 * s, '#33333a');                    // head
+  box(hx + 1 * s, c.y - 20.5 * s - hop, 1.3 * s, 1.3 * s, '#fff');
+  box(hx - 1.5 * s, c.y - 22.5 * s - hop, 2 * s, 1.6 * s, '#33333a');      // ear
+  box(c.x - 6 * s, c.y - 9 * s - hop, 2.4 * s, 9 * s, '#33333a');
+  box(c.x + 3 * s, c.y - 9 * s - hop, 2.4 * s, 9 * s, '#33333a');
+}
+
+let grapple = null, grabTimer = 5;
+function drawGrapple(g) {
+  cx.strokeStyle = '#141414'; cx.lineWidth = 3;
+  cx.beginPath(); cx.moveTo(g.x, -10); cx.lineTo(g.x, g.y); cx.stroke();
+  box(g.x - 11, g.y, 22, 16, '#1e2733');
+  box(g.x - 13, g.y + 14, 7, 16, '#c0392b');
+  box(g.x + 6, g.y + 14, 7, 16, '#c0392b');
+  box(g.x - 5, g.y - 9, 10, 9, '#f5c518');
+}
+
+let last = performance.now();
+function loop(now) {
+  const dt = Math.min((now - last) / 1000, .05); last = now;
+  cx.clearRect(0, 0, W, H);
+  cx.globalAlpha = .92;
+
+  grabTimer -= dt;
+  if (grabTimer <= 0 && !grapple) {
+    const pool = critters.filter(c => !c.grabbed && c.x > 80 && c.x < W - 80);
+    if (pool.length) {
+      const v = pool[(Math.random() * pool.length) | 0];
+      grapple = { x: v.x, y: -40, victim: v, state: 'down' };
+    }
+    grabTimer = R(6, 11);
+  }
+  if (grapple) {
+    const g = grapple, v = g.victim;
+    if (g.state === 'down') {
+      g.y += 320 * dt;
+      if (g.y >= v.y - 34) { g.state = 'up'; v.grabbed = true; }
+    } else {
+      g.y -= 260 * dt; v.y = g.y + 40; v.x = g.x;
+      if (g.y < -70) { critters.splice(critters.indexOf(v), 1); grapple = null; spawn(Math.random() < .5 ? 'z' : 's'); }
+    }
+  }
+
+  // ── trucks hunt, then splatter ──
+  for (const t of trucks) {
+    t.wheel += dt * 9; t.boom += dt * 1.4;
+    // steer toward the nearest critter ahead of it
+    let best = null, bd = 1e9;
+    for (const c of critters) {
+      if (c.grabbed) continue;
+      const dx = (c.x - t.x) * t.dir;
+      if (dx < 0) continue;
+      const d2 = Math.abs(c.x - t.x) + Math.abs(c.y - t.y) * 2.2;
+      if (d2 < bd) { bd = d2; best = c; }
+    }
+    if (best) t.y += Math.sign(best.y - t.y) * Math.min(46 * dt, Math.abs(best.y - t.y));
+    t.x += t.sp * t.dir * dt;
+
+    for (let i = critters.length - 1; i >= 0; i--) {
+      const c = critters[i];
+      if (c.grabbed) continue;
+      if (Math.abs(c.x - t.x) < 34 * t.s && Math.abs(c.y - t.y) < 20 * t.s) {
+        splat(c.x, c.y - 14 * c.s, c.kind);
+        critters.splice(i, 1);
+        spawn(Math.random() < .5 ? 'z' : 's');
+      }
+    }
+    if (t.dir === 1 && t.x > W + 220) { t.x = -200; t.y = R(H * .60, H * .92); }
+    if (t.dir === -1 && t.x < -220) { t.x = W + 200; t.y = R(H * .60, H * .92); }
+  }
+
+  // ── gore / wool ──
+  for (let i = guts.length - 1; i >= 0; i--) {
+    const g = guts[i];
+    g.vy += 520 * dt; g.x += g.vx * dt; g.y += g.vy * dt; g.life -= dt;
+    if (g.life <= 0) { guts.splice(i, 1); continue; }
+    box(g.x, g.y, g.s, g.s, g.c);
+  }
+
+  for (const c of critters) {
+    c.t += dt;
+    if (!c.grabbed) {
+      c.x += c.sp * c.dir * dt;
+      if (c.dir === 1 && c.x > W + 80) { c.x = -70; c.y = R(H * .58, H * .94); }
+      if (c.dir === -1 && c.x < -80) { c.x = W + 70; c.y = R(H * .58, H * .94); }
+    }
+    c.kind === 'z' ? drawZombie(c) : drawSheep(c);
+  }
+  cx.globalAlpha = 1;
+  for (const t of trucks) drawTruck(t);
+  if (grapple) drawGrapple(grapple);
+  cx.globalAlpha = 1;
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
